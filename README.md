@@ -1,0 +1,3 @@
+# Áfangastaður - Explore Iceland
+
+Application displaying destinations in Iceland for dining out, convenience, exploration and emergencies. Iceland offers a vast space for exploration and new experiences, but visiting a new country can be daunting. This application helps you find points of interest in Iceland, for both your convenience and safety. Iceland has narrow roads and far between gas stations, so it is crucial to keep informed and aware of your destinations.
