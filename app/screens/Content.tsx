@@ -50,6 +50,7 @@ const Content = () => {
         colorSelection={colorSelection}
         paddingValue={paddingValue}
         setPaddingValue={setPaddingValue}
+        resizingMode={resizingMode}
         setResizingMode={setResizingMode}
         setAlignment={setAlignment}
       />

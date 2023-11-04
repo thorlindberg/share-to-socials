@@ -6,7 +6,7 @@ import handleImagePicker from '../handlers/handleImagePicker';
 import handleColorPicker from '../handlers/handleColorPicker';
 import handleViewCapture from '../handlers/handleViewCapture';
 import handleNumberSelection from '../handlers/handleNumberSelection';
-import useHandleResizingMode from '../handlers/handleResizingMode';
+import handleResizingMode from '../handlers/handleResizingMode';
 import useHandleAlignment from '../handlers/handleAlignment';
 
 const rainbowURL = require('../assets/images/rainbow.png');
@@ -22,6 +22,7 @@ const Menu = ({
   colorSelection,
   paddingValue,
   setPaddingValue,
+  resizingMode,
   setResizingMode,
   setAlignment,
 }: {
@@ -37,13 +38,17 @@ const Menu = ({
   colorSelection: string;
   paddingValue: string;
   setPaddingValue: (value: string) => void;
+  resizingMode: string;
   setResizingMode: (value: string) => void;
   setAlignment: (value: string) => void;
 }) => {
-  const handleResizingMode = useHandleResizingMode();
   const handleAlignment = useHandleAlignment();
   const [isCustomizing, setCustomizing] = React.useState(false);
   const safeAreaInsets = useSafeAreaInsets();
+  const sizingModes = {
+    cover: 'minimize-2',
+    contain: 'maximize-2',
+  };
 
   const socialMediaTitle = (
     <View
@@ -64,7 +69,7 @@ const Menu = ({
   const controls = (
     <View
       style={{
-        paddingBottom: safeAreaInsets.bottom + 8,
+        paddingBottom: safeAreaInsets.bottom ? safeAreaInsets.bottom + 8 : 24,
         paddingTop: safeAreaInsets.top - safeAreaInsets.bottom + 12,
         gap: 40,
         alignItems: 'center',
@@ -103,10 +108,13 @@ const Menu = ({
             image={rainbowURL}
           />
           <Button
-            icon="maximize-2"
-            handlePress={() => handleResizingMode(setResizingMode)}
+            icon={sizingModes[resizingMode]}
+            handlePress={() =>
+              setResizingMode(handleResizingMode(resizingMode))
+            }
           />
-          <Button icon="align-center"
+          <Button
+            icon="align-center"
             handlePress={() => handleAlignment(setAlignment)}
           />
           <Button
