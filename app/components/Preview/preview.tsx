@@ -23,9 +23,9 @@ const Preview = ({
   setSelectedImage,
   nodeToCaptureRef,
   colorSelection,
-  selectedVerticalAlignment,
-  selectedHorizontalAlignment,
   paddingValue,
+  resizingMode,
+  alignment,
 }: {
   colorSelection: string;
   setFullscreenState: (color: boolean) => void;
@@ -35,10 +35,10 @@ const Preview = ({
   setSelectedImage: React.Dispatch<
     React.SetStateAction<ImageSourcePropType | null>
   >;
-  selectedHorizontalAlignment: string;
-  selectedVerticalAlignment: string;
   paddingValue: string;
   nodeToCaptureRef: React.RefObject<View>;
+  resizingMode: string;
+  alignment: string;
 }) => {
   // const {setDebug} = useDebug();
 
@@ -154,15 +154,15 @@ const Preview = ({
           <View
             style={{
               flex: 1,
-              alignItems: selectedVerticalAlignment,
-              justifyContent: selectedHorizontalAlignment,
+              alignItems: 'center',
+              justifyContent: alignment,
             }}>
             <Animated.Image
               source={selectedImage}
               style={{
                 flex: 1,
-                width: `${paddingValue}%`,
-                resizeMode: 'contain',
+                width: `${100 - paddingValue}%`,
+                resizeMode: resizingMode,
                 transform: [{scaleX: scale}, {scaleY: scale}],
                 opacity: opacity,
               }}

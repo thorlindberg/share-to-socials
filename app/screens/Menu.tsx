@@ -6,6 +6,8 @@ import handleImagePicker from '../handlers/handleImagePicker';
 import handleColorPicker from '../handlers/handleColorPicker';
 import handleViewCapture from '../handlers/handleViewCapture';
 import handleNumberSelection from '../handlers/handleNumberSelection';
+import useHandleResizingMode from '../handlers/handleResizingMode';
+import useHandleAlignment from '../handlers/handleAlignment';
 
 const rainbowURL = require('../assets/images/rainbow.png');
 
@@ -20,6 +22,8 @@ const Menu = ({
   colorSelection,
   paddingValue,
   setPaddingValue,
+  setResizingMode,
+  setAlignment,
 }: {
   activeSocial: string;
   onMenuLayout: (event: any) => void;
@@ -33,7 +37,11 @@ const Menu = ({
   colorSelection: string;
   paddingValue: string;
   setPaddingValue: (value: string) => void;
+  setResizingMode: (value: string) => void;
+  setAlignment: (value: string) => void;
 }) => {
+  const handleResizingMode = useHandleResizingMode();
+  const handleAlignment = useHandleAlignment();
   const [isCustomizing, setCustomizing] = React.useState(false);
   const safeAreaInsets = useSafeAreaInsets();
 
@@ -44,7 +52,7 @@ const Menu = ({
         alignItems: 'center',
         height: menuHeight,
         justifyContent: 'flex-end',
-        paddingBottom: safeAreaInsets.top - safeAreaInsets.bottom,
+        paddingBottom: safeAreaInsets.top - safeAreaInsets.bottom + 12,
       }}>
       <Text
         style={{fontWeight: '600', color: selectedImage ? 'black' : '#7d7d7d'}}>
@@ -58,7 +66,7 @@ const Menu = ({
       style={{
         paddingBottom: safeAreaInsets.bottom + 8,
         paddingTop: safeAreaInsets.top - safeAreaInsets.bottom + 12,
-        gap: 32,
+        gap: 40,
         alignItems: 'center',
       }}
       onLayout={onMenuLayout}>
@@ -94,8 +102,13 @@ const Menu = ({
             }}
             image={rainbowURL}
           />
-          <Button icon="maximize-2" />
-          <Button icon="align-center" />
+          <Button
+            icon="maximize-2"
+            handlePress={() => handleResizingMode(setResizingMode)}
+          />
+          <Button icon="align-center"
+            handlePress={() => handleAlignment(setAlignment)}
+          />
           <Button
             handlePress={() => handleNumberSelection(setPaddingValue)}
             text={paddingValue}

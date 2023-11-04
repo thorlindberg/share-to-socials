@@ -579,6 +579,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SharetoSocials/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Share;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -608,6 +609,7 @@
 				DEVELOPMENT_TEAM = VX5CR539N9;
 				INFOPLIST_FILE = SharetoSocials/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Share;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -3,10 +3,9 @@ import {Alert} from 'react-native';
 const handleNumberSelection = callback => {
   Alert.prompt(
     'Enter a number',
-    'Please enter a number:',
+    'for the percentage of padding',
     text => {
       if (text !== null) {
-        console.log(`User entered: ${text}`);
         callback(text);
       }
     },

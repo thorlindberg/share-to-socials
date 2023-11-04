@@ -15,9 +15,9 @@ const Content = () => {
   const [colorSelection, setColorSelection] = React.useState('white');
   const [fullscreenState, setFullscreenState] = React.useState(false);
   const [menuHeight, setMenuHeight] = React.useState(0);
-  const [selectedVerticalAlignment] = React.useState('center');
-  const [selectedHorizontalAlignment] = React.useState('center');
-  const [paddingValue, setPaddingValue] = React.useState('90');
+  const [paddingValue, setPaddingValue] = React.useState(10);
+  const [resizingMode, setResizingMode] = React.useState('contain');
+  const [alignment, setAlignment] = React.useState('center');
   const [selectedImage, setSelectedImage] =
     useState<ImageSourcePropType | null>(null);
 
@@ -50,6 +50,8 @@ const Content = () => {
         colorSelection={colorSelection}
         paddingValue={paddingValue}
         setPaddingValue={setPaddingValue}
+        setResizingMode={setResizingMode}
+        setAlignment={setAlignment}
       />
       <Previews>
         {socials.map((name, index) => (
@@ -61,10 +63,10 @@ const Content = () => {
             menuHeight={menuHeight}
             selectedImage={selectedImage}
             setSelectedImage={setSelectedImage}
-            selectedVerticalAlignment={selectedVerticalAlignment}
-            selectedHorizontalAlignment={selectedHorizontalAlignment}
             paddingValue={paddingValue}
             nodeToCaptureRef={nodeToCaptureRef}
+            resizingMode={resizingMode}
+            alignment={alignment}
           />
         ))}
       </Previews>
