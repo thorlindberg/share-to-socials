@@ -1,19 +1,17 @@
 import React, {useState} from 'react';
 import {
   Animated,
+  Dimensions,
   ImageSourcePropType,
   TouchableOpacity,
   View,
 } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
 import Rounded from '../Rounded/Rounded';
 import LinearGradient from 'react-native-linear-gradient';
 import {Icon} from '@rneui/themed';
 // import {useDebug} from '../DebugProvider/provider';
 import handleImagePicker from '../../handlers/handleImagePicker';
-
-const devices = require('../../assets/json/devices.json');
-const device = DeviceInfo.getModel();
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Preview = ({
   setFullscreenState,
@@ -40,8 +38,13 @@ const Preview = ({
   resizingMode: string;
   alignment: string;
 }) => {
-  // const {setDebug} = useDebug();
+  const safeAreaInsets = useSafeAreaInsets();
+  const statusBarHeight = safeAreaInsets.top;
+  const homeIndicatorHeight = safeAreaInsets.bottom;
+  const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
 
+  // const {setDebug} = useDebug();
   React.useEffect(() => {
     // setDebug('Device name', device);
   }, []);
@@ -69,10 +72,7 @@ const Preview = ({
       style={{
         backgroundColor: 'black',
         width: '100%',
-        height: `${
-          (100 / devices[device].screen.height) *
-          devices[device].safearea.statusbar
-        }%`,
+        height: `${(100 / screenHeight) * statusBarHeight}%`,
       }}
     />
   );
@@ -82,26 +82,11 @@ const Preview = ({
       style={{
         backgroundColor: 'black',
         width: '100%',
-        height: `${
-          (100 / devices[device].screen.height) * devices[device].safearea.home
-        }%`,
+        height: `${(100 / screenHeight) * homeIndicatorHeight}%`,
         justifyContent: 'center',
         alignItems: 'center',
-      }}>
-      <View
-        style={{
-          backgroundColor: 'white',
-          width: `${
-            (100 / devices[device].screen.width) *
-            devices[device].safearea.pill.width
-          }%`,
-          aspectRatio:
-            devices[device].safearea.pill.width /
-            devices[device].safearea.pill.height,
-          borderRadius: 1000,
-        }}
-      />
-    </View>
+      }}
+    />
   );
 
   const add = (
@@ -141,14 +126,14 @@ const Preview = ({
       }}>
       <View
         style={{
-          borderRadius: (100 / devices[device].screen.height) * 50,
+          borderRadius: (100 / screenHeight) * 50,
           overflow: 'hidden',
         }}>
         <View
           ref={nodeToCaptureRef}
           style={{
             aspectRatio: 9 / 16,
-            paddingVertical: (100 / devices[device].screen.height) * 70,
+            paddingVertical: (100 / screenHeight) * 70,
             backgroundColor: colorSelection,
           }}>
           <View
@@ -178,9 +163,9 @@ const Preview = ({
         <View
           style={{
             width: '100%',
-            height: `${(100 / devices[device].screen.height) * 70}%`,
+            height: `${(100 / screenHeight) * 70}%`,
             flexDirection: 'row',
-            gap: (100 / devices[device].screen.width) * 7,
+            gap: (100 / screenWidth) * 7,
             justifyContent: 'center',
             alignItems: 'center',
             overflow: 'hidden',
@@ -192,7 +177,7 @@ const Preview = ({
                 backgroundColor:
                   index % 2 === 0 ? 'rgb(155, 155, 155)' : 'rgb(105, 105, 105)',
                 opacity: 0.5,
-                width: `${(100 / devices[device].screen.width) * 5}%`,
+                width: `${(100 / screenWidth) * 5}%`,
                 height: '160%',
                 transform: [{rotateZ: '45deg'}],
               }}
@@ -207,9 +192,9 @@ const Preview = ({
         <View
           style={{
             width: '100%',
-            height: `${(100 / devices[device].screen.height) * 70}%`,
+            height: `${(100 / screenHeight) * 70}%`,
             flexDirection: 'row',
-            gap: (100 / devices[device].screen.width) * 7,
+            gap: (100 / screenWidth) * 7,
             justifyContent: 'center',
             alignItems: 'center',
             overflow: 'hidden',
@@ -221,7 +206,7 @@ const Preview = ({
                 backgroundColor:
                   index % 2 === 0 ? 'rgb(155, 155, 155)' : 'rgb(105, 105, 105)',
                 opacity: 0.5,
-                width: `${(100 / devices[device].screen.width) * 5}%`,
+                width: `${(100 / screenWidth) * 5}%`,
                 height: '160%',
                 transform: [{rotateZ: '45deg'}],
               }}
@@ -241,14 +226,6 @@ const Preview = ({
       useNativeDriver: false,
     }).start();
   }, [paddingBottom, fullscreenState, menuHeight]);
-
-  const dataLoaded =
-    devices[device]?.screen?.width &&
-    devices[device]?.screen?.height &&
-    devices[device]?.safearea?.statusbar &&
-    devices[device]?.safearea?.home &&
-    devices[device]?.safearea?.pill?.width &&
-    devices[device]?.safearea?.pill?.height;
 
   const [orientationData] = useState({
     alpha: 0,
@@ -316,20 +293,17 @@ const Preview = ({
               {rotateY: `${orientationData.beta}deg`},
             ],
           }}>
-          {dataLoaded && (
-            <Rounded
-              smooth
-              radius={31}
-              style={{
-                height: '100%',
-                aspectRatio:
-                  devices[device].screen.width / devices[device].screen.height,
-              }}>
-              {selectedImage && statusBar}
-              {selectedImage ? content : add}
-              {selectedImage && homeIndicator}
-            </Rounded>
-          )}
+          <Rounded
+            smooth
+            radius={31}
+            style={{
+              height: '100%',
+              aspectRatio: screenWidth / screenHeight,
+            }}>
+            {selectedImage && statusBar}
+            {selectedImage ? content : add}
+            {selectedImage && homeIndicator}
+          </Rounded>
         </Animated.View>
       </TouchableOpacity>
       <Animated.View
