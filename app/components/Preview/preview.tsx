@@ -63,7 +63,11 @@ const Preview = ({
     }).start();
   }, [scale, selectedImage]);
 
-  const scaling = React.useRef(new Animated.Value(0)).current;
+  const scaling = React.useRef(
+    new Animated.Value(
+      ((1 / screenHeight) * (screenHeight - 2 * menuHeight)) / 2,
+    ),
+  ).current;
   React.useEffect(() => {
     Animated.timing(scaling, {
       toValue: fullscreenState
@@ -73,6 +77,15 @@ const Preview = ({
       useNativeDriver: false,
     }).start();
   }, [fullscreenState, menuHeight, scaling, screenHeight]);
+
+  const scalingopacity = React.useRef(new Animated.Value(0)).current;
+  React.useEffect(() => {
+    Animated.timing(scalingopacity, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
+  }, [scalingopacity]);
 
   const opacity = React.useRef(new Animated.Value(0)).current;
   React.useEffect(() => {
@@ -160,7 +173,8 @@ const Preview = ({
             <Animated.Image
               source={selectedImage}
               style={{
-                width: resizingMode === 'cover' ? '100%' : `${100 - paddingValue}%`,
+                width:
+                  resizingMode === 'cover' ? '100%' : `${100 - paddingValue}%`,
                 height:
                   resizingMode === 'cover'
                     ? '100%'
@@ -239,6 +253,7 @@ const Preview = ({
     <Animated.View
       style={{
         pointerEvents: 'box-none',
+        opacity: scalingopacity,
         transform: [{scaleX: scaling}, {scaleY: scaling}],
       }}>
       <TouchableOpacity

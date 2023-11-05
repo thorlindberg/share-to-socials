@@ -15,14 +15,14 @@ const Previews = ({
   const ratio = (screenHeight - menuHeight * 2) / screenHeight;
   const calculated = ratio * screenWidth - 128; // verify this to be correct
 
-  const gap = React.useRef(new Animated.Value(0)).current;
+  const gap = React.useRef(new Animated.Value(-calculated)).current;
   React.useEffect(() => {
     Animated.timing(gap, {
       toValue: fullscreenState ? calculated : -calculated,
       duration: 250,
       useNativeDriver: false,
     }).start();
-  }, [fullscreenState, gap]);
+  }, [calculated, fullscreenState, gap]);
 
   return (
     <Animated.View
