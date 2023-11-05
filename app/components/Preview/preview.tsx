@@ -145,7 +145,10 @@ const Preview = ({
               source={selectedImage}
               style={{
                 width: `${100 - paddingValue}%`,
-                height: `${100 - 2 * (100 / screenHeight) * 70}%`,
+                height:
+                  resizingMode === 'cover'
+                    ? '100%'
+                    : `${100 - 2 * (100 / screenHeight) * 70}%`,
                 resizeMode: resizingMode,
                 transform: [{scaleX: scale}, {scaleY: scale}],
                 opacity: opacity,
