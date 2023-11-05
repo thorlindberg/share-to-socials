@@ -16,7 +16,7 @@ const useHandleAlignment = () => {
       selectedIndex => {
         switch (selectedIndex) {
           case 0:
-            setAlignment('flex-start');
+            setAlignment('top');
             break;
 
           case 1:
@@ -24,7 +24,7 @@ const useHandleAlignment = () => {
             break;
 
           case 2:
-            setAlignment('flex-end');
+            setAlignment('bottom');
             break;
 
           case cancelButtonIndex:

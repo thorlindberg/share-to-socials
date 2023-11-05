@@ -24,6 +24,7 @@ const Menu = ({
   setPaddingValue,
   resizingMode,
   setResizingMode,
+  alignment,
   setAlignment,
 }: {
   activeSocial: string;
@@ -40,6 +41,7 @@ const Menu = ({
   setPaddingValue: (value: string) => void;
   resizingMode: string;
   setResizingMode: (value: string) => void;
+  alignment: string;
   setAlignment: (value: string) => void;
 }) => {
   const handleAlignment = useHandleAlignment();
@@ -48,6 +50,11 @@ const Menu = ({
   const sizingModes = {
     cover: 'minimize-2',
     contain: 'maximize-2',
+  };
+  const alignmentModes = {
+    top: '', // check overview for Icons
+    center: 'align-center',
+    bottom: '', // check overview for Icons
   };
 
   const socialMediaTitle = (
@@ -109,16 +116,19 @@ const Menu = ({
           />
           <Button
             icon={sizingModes[resizingMode]}
+            fontColor="#0066FF"
             handlePress={() =>
               setResizingMode(handleResizingMode(resizingMode))
             }
           />
           <Button
-            icon="align-center"
+            icon={alignmentModes[alignment]}
+            fontColor="#0066FF"
             handlePress={() => handleAlignment(setAlignment)}
           />
           <Button
             handlePress={() => handleNumberSelection(setPaddingValue)}
+            fontColor="#0066FF"
             text={paddingValue}
           />
           <Button
@@ -141,6 +151,7 @@ const Menu = ({
                 setSelectedImage(image);
               });
             }}
+            fontColor="#0066FF"
             icon="image"
           />
           <Button

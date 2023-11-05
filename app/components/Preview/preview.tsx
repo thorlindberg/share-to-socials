@@ -43,6 +43,11 @@ const Preview = ({
   const homeIndicatorHeight = safeAreaInsets.bottom;
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
+  const alignmentModes = {
+    top: 'flex-start',
+    center: 'center',
+    bottom: 'flex-end',
+  };
 
   // const {setDebug} = useDebug();
   React.useEffect(() => {
@@ -150,7 +155,7 @@ const Preview = ({
             style={{
               flex: 1,
               alignItems: 'center',
-              justifyContent: alignment,
+              justifyContent: alignmentModes[alignment],
             }}>
             <Animated.Image
               source={selectedImage}

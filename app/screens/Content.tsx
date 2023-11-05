@@ -52,10 +52,11 @@ const Content = () => {
         setPaddingValue={setPaddingValue}
         resizingMode={resizingMode}
         setResizingMode={setResizingMode}
+        alignment={alignment}
         setAlignment={setAlignment}
       />
       <Previews>
-        {socials.map((name, index) => (
+        {socials.map((_, index) => (
           <Preview
             key={index}
             colorSelection={colorSelection}
