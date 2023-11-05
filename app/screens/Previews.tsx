@@ -1,17 +1,24 @@
 import * as React from 'react';
-import {Animated} from 'react-native';
+import {Animated, Dimensions} from 'react-native';
 
 const Previews = ({
   children,
   fullscreenState,
+  menuHeight,
 }: {
   children: React.ReactNode;
   fullscreenState: boolean;
+  menuHeight: number;
 }) => {
+  const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
+  const ratio = (screenHeight - menuHeight * 2) / screenHeight;
+  const calculated = ratio * screenWidth - 128; // verify this to be correct
+
   const gap = React.useRef(new Animated.Value(0)).current;
   React.useEffect(() => {
     Animated.timing(gap, {
-      toValue: fullscreenState ? 100 : -100, // this should be based on Dimensions and menuHeight
+      toValue: fullscreenState ? calculated : -calculated,
       duration: 250,
       useNativeDriver: false,
     }).start();
