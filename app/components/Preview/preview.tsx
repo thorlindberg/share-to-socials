@@ -133,7 +133,6 @@ const Preview = ({
           ref={nodeToCaptureRef}
           style={{
             aspectRatio: 9 / 16,
-            paddingVertical: (100 / screenHeight) * 70,
             backgroundColor: colorSelection,
           }}>
           <View
@@ -145,8 +144,8 @@ const Preview = ({
             <Animated.Image
               source={selectedImage}
               style={{
-                flex: 1,
                 width: `${100 - paddingValue}%`,
+                height: `${100 - 2 * (100 / screenHeight) * 70}%`,
                 resizeMode: resizingMode,
                 transform: [{scaleX: scale}, {scaleY: scale}],
                 opacity: opacity,
@@ -154,64 +153,34 @@ const Preview = ({
             />
           </View>
         </View>
-      </View>
-      <View
-        style={{
-          aspectRatio: 9 / 16,
-          position: 'absolute',
-        }}>
         <View
           style={{
-            width: '100%',
-            height: `${(100 / screenHeight) * 70}%`,
-            flexDirection: 'row',
-            gap: (100 / screenWidth) * 7,
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
+            aspectRatio: 9 / 16,
+            position: 'absolute',
           }}>
-          {Array.from({length: 100}, (_, index) => (
-            <View
-              key={index}
-              style={{
-                backgroundColor:
-                  index % 2 === 0 ? 'rgb(155, 155, 155)' : 'rgb(105, 105, 105)',
-                opacity: 0.5,
-                width: `${(100 / screenWidth) * 5}%`,
-                height: '160%',
-                transform: [{rotateZ: '45deg'}],
-              }}
-            />
-          ))}
-        </View>
-        <View
-          style={{
-            flex: 1,
-          }}
-        />
-        <View
-          style={{
-            width: '100%',
-            height: `${(100 / screenHeight) * 70}%`,
-            flexDirection: 'row',
-            gap: (100 / screenWidth) * 7,
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-          }}>
-          {Array.from({length: 100}, (_, index) => (
-            <View
-              key={index}
-              style={{
-                backgroundColor:
-                  index % 2 === 0 ? 'rgb(155, 155, 155)' : 'rgb(105, 105, 105)',
-                opacity: 0.5,
-                width: `${(100 / screenWidth) * 5}%`,
-                height: '160%',
-                transform: [{rotateZ: '45deg'}],
-              }}
-            />
-          ))}
+          <View
+            style={{
+              width: '100%',
+              height: `${(100 / screenHeight) * 70}%`,
+              flexDirection: 'row',
+              overflow: 'hidden',
+              backgroundColor: 'red',
+            }}
+          />
+          <View
+            style={{
+              flex: 1,
+            }}
+          />
+          <View
+            style={{
+              width: '100%',
+              height: `${(100 / screenHeight) * 70}%`,
+              flexDirection: 'row',
+              overflow: 'hidden',
+              backgroundColor: 'red',
+            }}
+          />
         </View>
       </View>
       <View style={{flex: 1, backgroundColor: 'black'}} />
