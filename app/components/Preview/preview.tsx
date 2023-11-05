@@ -58,6 +58,17 @@ const Preview = ({
     }).start();
   }, [scale, selectedImage]);
 
+  const scaling = React.useRef(new Animated.Value(1)).current;
+  React.useEffect(() => {
+    Animated.timing(scaling, {
+      toValue: fullscreenState
+        ? 1
+        : (1 / screenHeight) * (screenHeight - 2 * menuHeight),
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
+  }, [fullscreenState, menuHeight, scaling, screenHeight]);
+
   const opacity = React.useRef(new Animated.Value(0)).current;
   React.useEffect(() => {
     Animated.timing(opacity, {
@@ -190,15 +201,6 @@ const Preview = ({
     </View>
   );
 
-  const paddingBottom = React.useRef(new Animated.Value(menuHeight)).current;
-  React.useEffect(() => {
-    Animated.timing(paddingBottom, {
-      toValue: fullscreenState ? 0 : menuHeight,
-      duration: 250,
-      useNativeDriver: false,
-    }).start();
-  }, [paddingBottom, fullscreenState, menuHeight]);
-
   const [orientationData] = useState({
     alpha: 0,
     beta: 0,
@@ -229,13 +231,11 @@ const Preview = ({
   */
 
   return (
-    <View style={{pointerEvents: 'box-none'}}>
-      <Animated.View
-        style={{
-          height: paddingBottom,
-          pointerEvents: 'none',
-        }}
-      />
+    <Animated.View
+      style={{
+        pointerEvents: 'box-none',
+        transform: [{scaleX: scaling}, {scaleY: scaling}],
+      }}>
       <TouchableOpacity
         activeOpacity={1}
         style={{
@@ -278,13 +278,7 @@ const Preview = ({
           </Rounded>
         </Animated.View>
       </TouchableOpacity>
-      <Animated.View
-        style={{
-          height: paddingBottom,
-          pointerEvents: 'none',
-        }}
-      />
-    </View>
+    </Animated.View>
   );
 };
 
