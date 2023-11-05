@@ -55,7 +55,7 @@ const Content = () => {
         alignment={alignment}
         setAlignment={setAlignment}
       />
-      <Previews>
+      <Previews fullscreenState={fullscreenState}>
         {socials.map((_, index) => (
           <Preview
             key={index}
