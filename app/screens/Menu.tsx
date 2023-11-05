@@ -64,7 +64,7 @@ const Menu = ({
         alignItems: 'center',
         height: menuHeight,
         justifyContent: 'flex-end',
-        paddingBottom: safeAreaInsets.top - safeAreaInsets.bottom + 12,
+        paddingBottom: safeAreaInsets.top - safeAreaInsets.bottom + 8,
       }}>
       <Text
         style={{fontWeight: '600', color: selectedImage ? 'black' : '#7d7d7d'}}>
@@ -77,7 +77,7 @@ const Menu = ({
     <View
       style={{
         paddingBottom: safeAreaInsets.bottom ? safeAreaInsets.bottom + 8 : 24,
-        paddingTop: safeAreaInsets.top - safeAreaInsets.bottom + 12,
+        paddingTop: safeAreaInsets.top - safeAreaInsets.bottom + 8,
         gap: 40,
         alignItems: 'center',
       }}
