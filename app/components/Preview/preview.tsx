@@ -58,7 +58,7 @@ const Preview = ({
     }).start();
   }, [scale, selectedImage]);
 
-  const scaling = React.useRef(new Animated.Value(1)).current;
+  const scaling = React.useRef(new Animated.Value(0)).current;
   React.useEffect(() => {
     Animated.timing(scaling, {
       toValue: fullscreenState
@@ -155,7 +155,7 @@ const Preview = ({
             <Animated.Image
               source={selectedImage}
               style={{
-                width: `${100 - paddingValue}%`,
+                width: resizingMode === 'cover' ? '100%' : `${100 - paddingValue}%`,
                 height:
                   resizingMode === 'cover'
                     ? '100%'
