@@ -12,13 +12,13 @@ const Previews = ({
 }) => {
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
-  const ratio = (screenHeight - menuHeight * 2) / screenHeight;
-  const calculated = ratio * screenWidth - 128; // verify this to be correct
+  const ratio = (1 / screenHeight) * (screenHeight - 2 * menuHeight);
+  const calculated = screenWidth - screenWidth * ratio;
 
   const gap = React.useRef(new Animated.Value(-calculated)).current;
   React.useEffect(() => {
     Animated.timing(gap, {
-      toValue: fullscreenState ? calculated : -calculated,
+      toValue: fullscreenState ? calculated : -calculated + calculated / 4,
       duration: 250,
       useNativeDriver: false,
     }).start();

@@ -33,7 +33,7 @@ const Preview = ({
   setSelectedImage: React.Dispatch<
     React.SetStateAction<ImageSourcePropType | null>
   >;
-  paddingValue: string;
+  paddingValue: number;
   nodeToCaptureRef: React.RefObject<View>;
   resizingMode: string;
   alignment: string;
@@ -62,6 +62,15 @@ const Preview = ({
       useNativeDriver: true,
     }).start();
   }, [scale, selectedImage]);
+
+  const scale2 = React.useRef(new Animated.Value(0)).current;
+  React.useEffect(() => {
+    Animated.timing(scale2, {
+      toValue: selectedImage ? paddingValue : 1,
+      duration: 0,
+      useNativeDriver: true,
+    }).start();
+  }, [scale2, paddingValue, selectedImage]);
 
   const scaling = React.useRef(
     new Animated.Value(
@@ -164,17 +173,17 @@ const Preview = ({
             aspectRatio: 9 / 16,
             backgroundColor: colorSelection,
           }}>
-          <View
+          <Animated.View
             style={{
               flex: 1,
               alignItems: 'center',
               justifyContent: alignmentModes[alignment],
+              transform: [{scaleX: scale2}, {scaleY: scale2}],
             }}>
             <Animated.Image
               source={selectedImage}
               style={{
-                width:
-                  resizingMode === 'cover' ? '100%' : `${100 - paddingValue}%`,
+                width: '100%',
                 height:
                   resizingMode === 'cover'
                     ? '100%'
@@ -184,7 +193,7 @@ const Preview = ({
                 opacity: opacity,
               }}
             />
-          </View>
+          </Animated.View>
         </View>
         <View
           style={{
@@ -287,7 +296,7 @@ const Preview = ({
           }}>
           <Rounded
             smooth
-            radius={31}
+            radius={safeAreaInsets.bottom ? 31 : 0}
             style={{
               height: '100%',
               aspectRatio: screenWidth / screenHeight,

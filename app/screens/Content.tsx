@@ -15,7 +15,7 @@ const Content = () => {
   const [colorSelection, setColorSelection] = React.useState('white');
   const [fullscreenState, setFullscreenState] = React.useState(false);
   const [menuHeight, setMenuHeight] = React.useState(0);
-  const [paddingValue, setPaddingValue] = React.useState(10);
+  const [paddingValue, setPaddingValue] = React.useState(1);
   const [resizingMode, setResizingMode] = React.useState('contain');
   const [alignment, setAlignment] = React.useState('center');
   const [selectedImage, setSelectedImage] =
