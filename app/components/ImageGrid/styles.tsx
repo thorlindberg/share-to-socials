@@ -1,14 +1,17 @@
 import {StyleSheet} from 'react-native';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    aspectRatio: 1,
-  },
-  image: {
-    flex: 1,
-    aspectRatio: 1,
-  },
-});
+const useStyle = (aspectRatio: number) => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      aspectRatio: aspectRatio,
+      overflow: 'hidden',
+    },
+    image: {
+      flex: 1,
+      aspectRatio: aspectRatio,
+    },
+  });
+};
 
-export default styles;
+export default useStyle;

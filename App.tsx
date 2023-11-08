@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {ActionSheetProvider} from '@expo/react-native-action-sheet';
-import Content from './app/screens/Content';
+import Source from './app/screens/Source';
 import {DebugProvider} from './app/components/DebugProvider/provider';
 
 let Root = function App() {
@@ -9,7 +9,7 @@ let Root = function App() {
     <SafeAreaProvider>
       <ActionSheetProvider>
         <DebugProvider>
-          <Content />
+          <Source />
         </DebugProvider>
       </ActionSheetProvider>
     </SafeAreaProvider>
