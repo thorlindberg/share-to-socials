@@ -1,109 +1,14 @@
-import React, {useState} from 'react';
-import {
-  Animated,
-  Dimensions,
-  ImageSourcePropType,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import * as React from 'react';
+import {Dimensions, View} from 'react-native';
 import Rounded from '../Rounded/Rounded';
-import LinearGradient from 'react-native-linear-gradient';
-import {Icon} from '@rneui/themed';
-// import {useDebug} from '../DebugProvider/provider';
-import handleImagePicker from '../../handlers/handleImagePicker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-const Preview = ({
-  setFullscreenState,
-  fullscreenState,
-  menuHeight,
-  selectedImage,
-  setSelectedImage,
-  nodeToCaptureRef,
-  colorSelection,
-  paddingValue,
-  resizingMode,
-  alignment,
-}: {
-  colorSelection: string;
-  setFullscreenState: (color: boolean) => void;
-  fullscreenState: boolean;
-  menuHeight: number;
-  selectedImage: ImageSourcePropType | null;
-  setSelectedImage: React.Dispatch<
-    React.SetStateAction<ImageSourcePropType | null>
-  >;
-  paddingValue: number;
-  nodeToCaptureRef: React.RefObject<View>;
-  resizingMode: string;
-  alignment: string;
-}) => {
+const Preview = ({children}: {children: React.ReactNode}) => {
   const safeAreaInsets = useSafeAreaInsets();
   const statusBarHeight = safeAreaInsets.top;
   const homeIndicatorHeight = safeAreaInsets.bottom;
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
-  const alignmentModes = {
-    top: 'flex-start',
-    center: 'center',
-    bottom: 'flex-end',
-  };
-
-  // const {setDebug} = useDebug();
-  React.useEffect(() => {
-    // setDebug('Device name', device);
-  }, []);
-
-  const scale = React.useRef(new Animated.Value(0)).current;
-  React.useEffect(() => {
-    Animated.timing(scale, {
-      toValue: selectedImage ? 1 : 0.8,
-      duration: 250,
-      useNativeDriver: true,
-    }).start();
-  }, [scale, selectedImage]);
-
-  const scale2 = React.useRef(new Animated.Value(0)).current;
-  React.useEffect(() => {
-    Animated.timing(scale2, {
-      toValue: selectedImage ? paddingValue : 1,
-      duration: 0,
-      useNativeDriver: true,
-    }).start();
-  }, [scale2, paddingValue, selectedImage]);
-
-  const scaling = React.useRef(
-    new Animated.Value(
-      ((1 / screenHeight) * (screenHeight - 2 * menuHeight)) / 2,
-    ),
-  ).current;
-  React.useEffect(() => {
-    Animated.timing(scaling, {
-      toValue: fullscreenState
-        ? 1
-        : (1 / screenHeight) * (screenHeight - 2 * menuHeight),
-      duration: 250,
-      useNativeDriver: false,
-    }).start();
-  }, [fullscreenState, menuHeight, scaling, screenHeight]);
-
-  const scalingopacity = React.useRef(new Animated.Value(0)).current;
-  React.useEffect(() => {
-    Animated.timing(scalingopacity, {
-      toValue: 1,
-      duration: 250,
-      useNativeDriver: false,
-    }).start();
-  }, [scalingopacity]);
-
-  const opacity = React.useRef(new Animated.Value(0)).current;
-  React.useEffect(() => {
-    Animated.timing(opacity, {
-      toValue: selectedImage ? 1 : 0,
-      duration: 250,
-      useNativeDriver: true,
-    }).start();
-  }, [opacity, selectedImage]);
 
   const statusBar = (
     <View
@@ -127,187 +32,28 @@ const Preview = ({
     />
   );
 
-  const add = (
-    <LinearGradient
-      colors={['#FFFFFF', '#DBDBDB']}
-      start={{x: 1, y: 1}}
-      end={{x: 0, y: 0}}
-      style={{
-        backgroundColor: 'white',
-        width: '100%',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <Icon
-        name="plus"
-        size={56}
-        type="font-awesome"
-        color="#ACACAC"
-        style={{
-          padding: 32,
-          width: 120,
-          height: 120,
-          backgroundColor: 'white',
-          borderRadius: 1000,
-        }}
-      />
-    </LinearGradient>
-  );
-
-  const content = (
+  return (
     <View
       style={{
-        width: '100%',
         flex: 1,
-        backgroundColor: 'black',
+        shadowColor: 'black',
+        shadowOffset: {width: 0, height: 12},
+        shadowOpacity: 0.25,
+        shadowRadius: 12,
+        overflow: 'visible',
       }}>
-      <View
+      <Rounded
+        smooth
+        radius={safeAreaInsets.bottom ? (100 / screenHeight) * 200 : 0}
         style={{
-          borderRadius: (100 / screenHeight) * 50,
-          overflow: 'hidden',
+          height: '100%',
+          aspectRatio: screenWidth / screenHeight,
         }}>
-        <View
-          ref={nodeToCaptureRef}
-          style={{
-            aspectRatio: 9 / 16,
-            backgroundColor: colorSelection,
-          }}>
-          <Animated.View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: alignmentModes[alignment],
-              transform: [{scaleX: scale2}, {scaleY: scale2}],
-            }}>
-            <Animated.Image
-              source={selectedImage}
-              style={{
-                width: '100%',
-                height:
-                  resizingMode === 'cover'
-                    ? '100%'
-                    : `${100 - 2 * (100 / screenHeight) * 70}%`,
-                resizeMode: resizingMode,
-                transform: [{scaleX: scale}, {scaleY: scale}],
-                opacity: opacity,
-              }}
-            />
-          </Animated.View>
-        </View>
-        <View
-          style={{
-            aspectRatio: 9 / 16,
-            position: 'absolute',
-          }}>
-          <View
-            style={{
-              width: '100%',
-              height: `${(100 / screenHeight) * 70}%`,
-              flexDirection: 'row',
-              overflow: 'hidden',
-              backgroundColor: 'red',
-            }}
-          />
-          <View
-            style={{
-              flex: 1,
-            }}
-          />
-          <View
-            style={{
-              width: '100%',
-              height: `${(100 / screenHeight) * 70}%`,
-              flexDirection: 'row',
-              overflow: 'hidden',
-              backgroundColor: 'red',
-            }}
-          />
-        </View>
-      </View>
-      <View style={{flex: 1, backgroundColor: 'black'}} />
+        {statusBar}
+        {children}
+        {homeIndicator}
+      </Rounded>
     </View>
-  );
-
-  const [orientationData] = useState({
-    alpha: 0,
-    beta: 0,
-    gamma: 0,
-  });
-
-  /*
-  React.useEffect(() => {
-    setUpdateIntervalForType(SensorTypes.accelerometer, 10);
-
-    const subscription = accelerometer
-      .pipe(
-        map(({x, y, z}) => {
-          setOrientationData({alpha: x * 360, beta: y * 360, gamma: z * 360});
-        }),
-      )
-      .subscribe(
-        speed => console.log(`You moved your phone with ${speed}`),
-        error => {
-          console.log('The sensor is not available');
-        },
-      );
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-  */
-
-  return (
-    <Animated.View
-      style={{
-        pointerEvents: 'box-none',
-        opacity: scalingopacity,
-        transform: [{scaleX: scaling}, {scaleY: scaling}],
-      }}>
-      <TouchableOpacity
-        activeOpacity={1}
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          shadowColor: 'black',
-          shadowOffset: {width: 0, height: 12},
-          shadowOpacity: selectedImage ? 0.25 : 0.15,
-          shadowRadius: 12,
-          overflow: 'visible',
-        }}
-        onPress={
-          selectedImage
-            ? () => setFullscreenState(!fullscreenState)
-            : () => {
-                handleImagePicker(image => {
-                  setSelectedImage(image);
-                });
-              }
-        }>
-        <Animated.View
-          style={{
-            transform: [
-              {perspective: 1000},
-              {rotateX: `${orientationData.alpha}deg`},
-              {rotateY: `${orientationData.beta}deg`},
-            ],
-          }}>
-          <Rounded
-            smooth
-            radius={safeAreaInsets.bottom ? 31 : 0}
-            style={{
-              height: '100%',
-              aspectRatio: screenWidth / screenHeight,
-            }}>
-            {selectedImage && statusBar}
-            {selectedImage ? content : add}
-            {selectedImage && homeIndicator}
-          </Rounded>
-        </Animated.View>
-      </TouchableOpacity>
-    </Animated.View>
   );
 };
 

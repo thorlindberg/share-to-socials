@@ -1,5 +1,8 @@
 const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 
+const defaultConfig = getDefaultConfig(__dirname);
+const {assetExts, sourceExts} = defaultConfig.resolver;
+
 /**
  * Metro configuration
  * https://facebook.github.io/metro/docs/configuration
@@ -8,8 +11,13 @@ const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
  */
 
 const config = {
+  transformer: {
+    babelTransformerPath: require.resolve('react-native-svg-transformer'),
+  },
   resolver: {
     resolverMainFields: ['sbmodern', 'react-native', 'browser', 'main'],
+    assetExts: assetExts.filter(ext => ext !== 'svg'),
+    sourceExts: [...sourceExts, 'svg'],
   },
 };
 
