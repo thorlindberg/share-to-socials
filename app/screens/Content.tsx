@@ -52,17 +52,34 @@ const Content = () => {
   const [rightExpansion, setRightExpansion] = useState(0);
   const [colorSelection, setColorSelection] = useState('white');
   const [paddingValue, setPaddingValue] = useState(1);
-  const [sizing, setSizing] = useState('Fit');
-  const [horizontal, setHorizontal] = useState('center');
-  const [vertical, setVertical] = useState('center');
   const [selectedImage, setSelectedImage] =
     useState<ImageSourcePropType | null>(null);
 
+  const [sizing, setSizing] = useState('Fit');
+  const [horizontal, setHorizontal] = useState('center');
+  const [vertical, setVertical] = useState('center');
+  const [insetTop, setInsetTop] = useState(0);
+  const [insetBottom, setInsetBottom] = useState(0);
+  const [insetLeft, setInsetLeft] = useState(0);
+  const [insetRight, setInsetRight] = useState(0);
+  useEffect(() => {
+    setHorizontal('center');
+    setVertical('center');
+    setInsetTop(0);
+    setInsetBottom(0);
+    setInsetLeft(0);
+    setInsetRight(0);
+  }, [sizing]);
+
+  const [previewHeight, setPreviewHeight] = useState(screenHeight * 0.5);
   const [isScrolled, setIsScrolled] = useState(false);
   const handleScroll = (event: {nativeEvent: {contentOffset: {y: number}}}) => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY > 8) {
+    if (offsetY > 0) {
       setIsScrolled(true);
+      if (offsetY < screenHeight * 0.5 - 200) {
+        setPreviewHeight(screenHeight * 0.5 - offsetY);
+      }
     } else {
       setIsScrolled(false);
     }
@@ -145,6 +162,7 @@ const Content = () => {
               flex: 1,
               alignItems: horizontal,
               justifyContent: vertical,
+              transform: [{translateX: insetLeft - insetRight}, {translateY: insetTop - insetBottom}],
             }}>
             {selectedImage && (
               <Reflect
@@ -346,120 +364,157 @@ const Content = () => {
   const verticalalignment = (
     <View
       style={{
-        paddingVertical: 24,
-        paddingHorizontal: 12,
-        flexDirection: 'row',
+        backgroundColor: 'white',
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: 'rgb(220, 220, 220)',
       }}>
-      {[
-        {
-          name: 'Top',
-          alignment: 'flex-start',
-          node: <Top height={56} />,
-          selected: <TopSelected height={56} />,
-        },
-        {
-          name: 'Center',
-          alignment: 'center',
-          node: <Vertical height={56} />,
-          selected: <VerticalSelected height={56} />,
-        },
-        {
-          name: 'Bottom',
-          alignment: 'flex-end',
-          node: <Bottom height={56} />,
-          selected: <BottomSelected height={56} />,
-        },
-      ].map((item, index) => (
-        <TouchableOpacity
-          key={index}
-          activeOpacity={vertical === item.alignment ? 1 : 0.2}
-          onPress={() => {
-            setVertical(item.alignment);
-          }}
-          style={{flex: 1, alignItems: 'center', gap: 12}}>
-          {vertical === item.alignment ? item.selected : item.node}
+      <View
+        style={{
+          paddingVertical: 24,
+          paddingHorizontal: 12,
+          flexDirection: 'row',
+        }}>
+        {[
+          {
+            name: 'Top',
+            alignment: 'flex-start',
+            node: <Top height={56} />,
+            selected: <TopSelected height={56} />,
+          },
+          {
+            name: 'Center',
+            alignment: 'center',
+            node: <Vertical height={56} />,
+            selected: <VerticalSelected height={56} />,
+          },
+          {
+            name: 'Bottom',
+            alignment: 'flex-end',
+            node: <Bottom height={56} />,
+            selected: <BottomSelected height={56} />,
+          },
+        ].map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            activeOpacity={vertical === item.alignment ? 1 : 0.2}
+            onPress={() => {
+              setVertical(item.alignment);
+            }}
+            style={{flex: 1, alignItems: 'center', gap: 12}}>
+            {vertical === item.alignment ? item.selected : item.node}
+            <View
+              style={{
+                paddingVertical: 4,
+                paddingHorizontal: 12,
+                backgroundColor:
+                  vertical === item.alignment ? '#0066FF' : 'white',
+                borderRadius: 1000,
+              }}>
+              <Text
+                style={{
+                  color:
+                    vertical === item.alignment
+                      ? 'white'
+                      : 'rgb(100, 100, 100)',
+                  fontWeight: '600',
+                }}>
+                {item.name}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+      {vertical === 'flex-start' && (
+        <>
           <View
             style={{
-              paddingVertical: 4,
-              paddingHorizontal: 12,
-              backgroundColor:
-                vertical === item.alignment ? '#0066FF' : 'white',
-              borderRadius: 1000,
+              height: 1,
+              backgroundColor: 'rgb(225, 225, 225)',
+            }}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 24,
+              paddingVertical: 8,
+              gap: 24,
             }}>
             <Text
               style={{
-                color:
-                  vertical === item.alignment ? 'white' : 'rgb(100, 100, 100)',
                 fontWeight: '600',
               }}>
-              {item.name}
+              Inset
+            </Text>
+            <View style={{flex: 1}}>
+              <Slider
+                step={1}
+                minimumValue={0}
+                maximumValue={100} // not sure how to determine the appropriate value. it should probably never be more than what would equal a centered image
+                value={insetTop}
+                onValueChange={setInsetTop}
+                minimumTrackTintColor="#0066FF"
+                maximumTrackTintColor="#000000"
+              />
+            </View>
+            <Text
+              style={{
+                color: '#0066FF',
+                fontWeight: '600',
+              }}>
+              {insetTop}
             </Text>
           </View>
-        </TouchableOpacity>
-      ))}
+        </>
+      )}
+      {vertical === 'flex-end' && (
+        <>
+          <View
+            style={{
+              height: 1,
+              backgroundColor: 'rgb(225, 225, 225)',
+            }}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 24,
+              paddingVertical: 8,
+              gap: 24,
+            }}>
+            <Text
+              style={{
+                fontWeight: '600',
+              }}>
+              Inset
+            </Text>
+            <View style={{flex: 1}}>
+              <Slider
+                step={1}
+                minimumValue={0}
+                maximumValue={100} // not sure how to determine the appropriate value. it should probably never be more than what would equal a centered image
+                value={insetBottom}
+                onValueChange={setInsetBottom}
+                minimumTrackTintColor="#0066FF"
+                maximumTrackTintColor="#000000"
+              />
+            </View>
+            <Text
+              style={{
+                color: '#0066FF',
+                fontWeight: '600',
+              }}>
+              {insetBottom}
+            </Text>
+          </View>
+        </>
+      )}
     </View>
   );
 
   const horizontalalignment = (
-    <View
-      style={{
-        paddingVertical: 24,
-        paddingHorizontal: 12,
-        flexDirection: 'row',
-      }}>
-      {[
-        {
-          name: 'Left',
-          alignment: 'flex-start',
-          node: <Left height={56} />,
-          selected: <LeftSelected height={56} />,
-        },
-        {
-          name: 'Center',
-          alignment: 'center',
-          node: <Horizontal height={56} />,
-          selected: <HorizontalSelected height={56} />,
-        },
-        {
-          name: 'Right',
-          alignment: 'flex-end',
-          node: <Right height={56} />,
-          selected: <RightSelected height={56} />,
-        },
-      ].map((item, index) => (
-        <TouchableOpacity
-          key={index}
-          activeOpacity={horizontal === item.alignment ? 1 : 0.2}
-          onPress={() => {
-            setHorizontal(item.alignment);
-          }}
-          style={{flex: 1, alignItems: 'center', gap: 12}}>
-          {horizontal === item.alignment ? item.selected : item.node}
-          <View
-            style={{
-              paddingVertical: 4,
-              paddingHorizontal: 12,
-              backgroundColor:
-                horizontal === item.alignment ? '#0066FF' : 'white',
-              borderRadius: 1000,
-            }}>
-            <Text
-              style={{
-                color:
-                  horizontal === item.alignment
-                    ? 'white'
-                    : 'rgb(100, 100, 100)',
-                fontWeight: '600',
-              }}>
-              {item.name}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      ))}
-    </View>
-  );
-
-  const alignment = (
     <View
       style={{
         backgroundColor: 'white',
@@ -467,14 +522,148 @@ const Content = () => {
         borderWidth: 1,
         borderColor: 'rgb(220, 220, 220)',
       }}>
-      {verticalalignment}
       <View
         style={{
-          height: 1,
-          backgroundColor: 'rgb(225, 225, 225)',
-        }}
-      />
-      {horizontalalignment}
+          paddingVertical: 24,
+          paddingHorizontal: 12,
+          flexDirection: 'row',
+        }}>
+        {[
+          {
+            name: 'Left',
+            alignment: 'flex-start',
+            node: <Left height={56} />,
+            selected: <LeftSelected height={56} />,
+          },
+          {
+            name: 'Center',
+            alignment: 'center',
+            node: <Horizontal height={56} />,
+            selected: <HorizontalSelected height={56} />,
+          },
+          {
+            name: 'Right',
+            alignment: 'flex-end',
+            node: <Right height={56} />,
+            selected: <RightSelected height={56} />,
+          },
+        ].map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            activeOpacity={horizontal === item.alignment ? 1 : 0.2}
+            onPress={() => {
+              setHorizontal(item.alignment);
+            }}
+            style={{flex: 1, alignItems: 'center', gap: 12}}>
+            {horizontal === item.alignment ? item.selected : item.node}
+            <View
+              style={{
+                paddingVertical: 4,
+                paddingHorizontal: 12,
+                backgroundColor:
+                  horizontal === item.alignment ? '#0066FF' : 'white',
+                borderRadius: 1000,
+              }}>
+              <Text
+                style={{
+                  color:
+                    horizontal === item.alignment
+                      ? 'white'
+                      : 'rgb(100, 100, 100)',
+                  fontWeight: '600',
+                }}>
+                {item.name}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+      {horizontal === 'flex-start' && (
+        <>
+          <View
+            style={{
+              height: 1,
+              backgroundColor: 'rgb(225, 225, 225)',
+            }}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 24,
+              paddingVertical: 8,
+              gap: 24,
+            }}>
+            <Text
+              style={{
+                fontWeight: '600',
+              }}>
+              Inset
+            </Text>
+            <View style={{flex: 1}}>
+              <Slider
+                step={1}
+                minimumValue={0}
+                maximumValue={100} // not sure how to determine the appropriate value. it should probably never be more than what would equal a centered image
+                value={insetLeft}
+                onValueChange={setInsetLeft}
+                minimumTrackTintColor="#0066FF"
+                maximumTrackTintColor="#000000"
+              />
+            </View>
+            <Text
+              style={{
+                color: '#0066FF',
+                fontWeight: '600',
+              }}>
+              {insetLeft}
+            </Text>
+          </View>
+        </>
+      )}
+      {horizontal === 'flex-end' && (
+        <>
+          <View
+            style={{
+              height: 1,
+              backgroundColor: 'rgb(225, 225, 225)',
+            }}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 24,
+              paddingVertical: 8,
+              gap: 24,
+            }}>
+            <Text
+              style={{
+                fontWeight: '600',
+              }}>
+              Inset
+            </Text>
+            <View style={{flex: 1}}>
+              <Slider
+                step={1}
+                minimumValue={0}
+                maximumValue={100} // not sure how to determine the appropriate value. it should probably never be more than what would equal a centered image
+                value={insetRight}
+                onValueChange={setInsetRight}
+                minimumTrackTintColor="#0066FF"
+                maximumTrackTintColor="#000000"
+              />
+            </View>
+            <Text
+              style={{
+                color: '#0066FF',
+                fontWeight: '600',
+              }}>
+              {insetRight}
+            </Text>
+          </View>
+        </>
+      )}
     </View>
   );
 
@@ -533,8 +722,7 @@ const Content = () => {
         <View
           style={{
             flex: 1,
-            padding: 24,
-            paddingTop: 12,
+            paddingHorizontal: 24,
             paddingBottom: safeAreaInsets.bottom
               ? safeAreaInsets.bottom + 12
               : 24,
@@ -550,13 +738,14 @@ const Content = () => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <View style={{width: '50%'}}>
+            <View style={{height: previewHeight}}>
               <Preview>{instagram}</Preview>
             </View>
           </View>
           {colorPicker}
           {size}
-          {alignment}
+          {sizing !== 'Fill' && verticalalignment}
+          {sizing !== 'Fill' && horizontalalignment}
           {controls}
         </View>
       </ScrollView>
