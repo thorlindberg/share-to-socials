@@ -113,7 +113,12 @@ const Content = () => {
             }}
             onLayout={event => setWidth(event.nativeEvent.layout.width)}>
             {data.map((item, index) => (
-              <Item width={width} selectedImage={selectedImage} item={item} />
+              <Item
+                key={index}
+                width={width}
+                selectedImage={selectedImage}
+                item={item}
+              />
             ))}
           </View>
         </ScrollView>
