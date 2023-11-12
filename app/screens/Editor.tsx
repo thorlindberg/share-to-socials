@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -65,10 +66,10 @@ const Editor = ({
   initialInsetRight: number;
   initialInsetTop: number;
   initialInsetBottom: number;
-  initialTopExpansion: number;
-  initialBottomExpansion: number;
-  initialLeftExpansion: number;
-  initialRightExpansion: number;
+  initialTopExpansion: string;
+  initialBottomExpansion: string;
+  initialLeftExpansion: string;
+  initialRightExpansion: string;
   initialSizing: 'Fit' | 'Fill' | 'Scale';
 }) => {
   const {closeModal} = useModal();
@@ -141,43 +142,51 @@ const Editor = ({
         borderWidth: 1,
         borderColor: 'rgb(220, 220, 220)',
         gap: 12,
+        alignItems: 'center',
       }}>
-      <Text>Top</Text>
-      <Slider
-        minimumValue={0}
-        maximumValue={100}
-        value={topExpansion}
-        onValueChange={setTopExpansion}
-        minimumTrackTintColor="#0066FF"
-        maximumTrackTintColor="#000000"
-      />
-      <Text>Bottom</Text>
-      <Slider
-        minimumValue={0}
-        maximumValue={100}
-        value={bottomExpansion}
-        onValueChange={setBottomExpansion}
-        minimumTrackTintColor="#0066FF"
-        maximumTrackTintColor="#000000"
-      />
-      <Text>Left</Text>
-      <Slider
-        minimumValue={0}
-        maximumValue={100}
-        value={leftExpansion}
-        onValueChange={setLeftExpansion}
-        minimumTrackTintColor="#0066FF"
-        maximumTrackTintColor="#000000"
-      />
-      <Text>Right</Text>
-      <Slider
-        minimumValue={0}
-        maximumValue={100}
-        value={rightExpansion}
-        onValueChange={setRightExpansion}
-        minimumTrackTintColor="#0066FF"
-        maximumTrackTintColor="#000000"
-      />
+      <View style={{flexDirection: 'row', gap: 8}}>
+        <TextInput
+          onChangeText={setTopExpansion}
+          value={topExpansion}
+          placeholder="Top"
+          keyboardType="numeric"
+        />
+        <Text>%</Text>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '100%',
+        }}>
+        <View style={{flexDirection: 'row', gap: 8}}>
+          <TextInput
+            onChangeText={setLeftExpansion}
+            value={leftExpansion}
+            placeholder="Left"
+            keyboardType="numeric"
+          />
+          <Text>%</Text>
+        </View>
+        <View style={{flexDirection: 'row', gap: 8}}>
+          <TextInput
+            onChangeText={setRightExpansion}
+            value={rightExpansion}
+            placeholder="Right"
+            keyboardType="numeric"
+          />
+          <Text>%</Text>
+        </View>
+      </View>
+      <View style={{flexDirection: 'row', gap: 8}}>
+        <TextInput
+          onChangeText={setBottomExpansion}
+          value={bottomExpansion}
+          placeholder="Bottom"
+          keyboardType="numeric"
+        />
+        <Text>%</Text>
+      </View>
     </View>
   );
 

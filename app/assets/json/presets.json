@@ -14,12 +14,34 @@
         "right": 0
       },
       "expansion": {
-        "top": 0,
-        "bottom": 0,
-        "left": 0,
-        "right": 0
+        "top": "0",
+        "bottom": "0",
+        "left": "0",
+        "right": "0"
       },
       "sizing": "Fit"
+    },
+    {
+      "backgroundColor": "white",
+      "background": "Color",
+      "scale": 0.8,
+      "alignment": {
+        "horizontal": "center",
+        "vertical": "flex-start"
+      },
+      "inset": {
+        "left": 0,
+        "top": 0,
+        "bottom": 0,
+        "right": 0
+      },
+      "expansion": {
+        "top": "0",
+        "bottom": "0",
+        "left": "0",
+        "right": "0"
+      },
+      "sizing": "Scale"
     },
     {
       "backgroundColor": "white",
@@ -36,32 +58,10 @@
         "right": 0
       },
       "expansion": {
-        "top": 0,
-        "bottom": 0,
-        "left": 0,
-        "right": 0
-      },
-      "sizing": "Fit"
-    },
-    {
-      "backgroundColor": "white",
-      "background": "Color",
-      "scale": 1,
-      "alignment": {
-        "horizontal": "center",
-        "vertical": "center"
-      },
-      "inset": {
-        "left": 0,
-        "top": 0,
-        "bottom": 0,
-        "right": 0
-      },
-      "expansion": {
-        "top": 0,
-        "bottom": 0,
-        "left": 0,
-        "right": 0
+        "top": "0",
+        "bottom": "0",
+        "left": "0",
+        "right": "0"
       },
       "sizing": "Fit"
     }
