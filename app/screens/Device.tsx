@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
-import {Dimensions, ImageSourcePropType, View} from 'react-native';
+import {Dimensions, Image, ImageSourcePropType, View} from 'react-native';
 import Preview from '../components/Preview/preview';
 import Reflect from '../components/Reflect/reflect';
 
 const Device = ({
   selectedImage,
-  backgroundColor,
+  backgroundColor = 'white',
+  background,
+  blur = 200,
   initialPadding,
   initialHorizontal,
   initialVertical,
@@ -18,8 +20,10 @@ const Device = ({
   initialLeftExpansion,
   initialRightExpansion,
 }: {
-  selectedImage: ImageSourcePropType | null;
-  backgroundColor: string;
+  selectedImage: ImageSourcePropType;
+  backgroundColor?: string;
+  background: 'Color' | 'Automatic' | 'Duplicate';
+  blur?: number;
   initialPadding: number;
   initialHorizontal: 'flex-start' | 'center' | 'flex-end';
   initialVertical: 'flex-start' | 'center' | 'flex-end';
@@ -64,8 +68,16 @@ const Device = ({
                   {translateY: initialInsetTop - initialInsetBottom},
                 ],
               }}>
+              {background === 'Duplicate' && (
+                <Image
+                  style={{height: '100%', aspectRatio: aspectRatio}}
+                  source={selectedImage}
+                  blurRadius={blur}
+                />
+              )}
               <Reflect
                 style={{
+                  position: 'absolute',
                   transform: [
                     {scaleX: initialPadding},
                     {scaleY: initialPadding},

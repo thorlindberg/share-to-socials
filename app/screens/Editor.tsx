@@ -43,6 +43,7 @@ const Editor = ({
   selectedImage,
   backgroundColor,
   initialBackground,
+  initialBlur,
   initialPadding,
   initialHorizontal,
   initialVertical,
@@ -59,6 +60,7 @@ const Editor = ({
   selectedImage: ImageSourcePropType;
   backgroundColor: string;
   initialBackground: 'Color' | 'Automatic' | 'Duplicate';
+  initialBlur?: number;
   initialPadding: number;
   initialHorizontal: 'flex-start' | 'center' | 'flex-end';
   initialVertical: 'flex-start' | 'center' | 'flex-end';
@@ -113,6 +115,7 @@ const Editor = ({
   const [paddingValue, setPaddingValue] = useState(initialPadding);
   const [sizing, setSizing] = useState(initialSizing);
   const [background, setBackground] = useState(initialBackground);
+  const [blur, setBlur] = useState(initialBlur);
   const [horizontal, setHorizontal] = useState(initialHorizontal);
   const [vertical, setVertical] = useState(initialVertical);
   const [insetTop, setInsetTop] = useState(initialInsetTop);
@@ -437,6 +440,49 @@ const Editor = ({
                 </View>
               </TouchableOpacity>
             ))}
+          </View>
+        </>
+      )}
+      {background === 'Duplicate' && (
+        <>
+          <View
+            style={{
+              height: 1,
+              backgroundColor: 'rgb(225, 225, 225)',
+            }}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 24,
+              paddingVertical: 8,
+              gap: 24,
+            }}>
+            <Text
+              style={{
+                fontWeight: '600',
+              }}>
+              Blur
+            </Text>
+            <View style={{flex: 1}}>
+              <Slider
+                step={1}
+                minimumValue={0}
+                maximumValue={500} // not sure how to determine the appropriate value
+                value={blur}
+                onValueChange={setBlur}
+                minimumTrackTintColor="#0066FF"
+                maximumTrackTintColor="#000000"
+              />
+            </View>
+            <Text
+              style={{
+                color: '#0066FF',
+                fontWeight: '600',
+              }}>
+              {blur}
+            </Text>
           </View>
         </>
       )}
@@ -807,6 +853,8 @@ const Editor = ({
               <Device
                 selectedImage={selectedImage}
                 backgroundColor={colorSelection}
+                background={background}
+                blur={blur}
                 initialPadding={paddingValue}
                 initialHorizontal={horizontal}
                 initialVertical={vertical}

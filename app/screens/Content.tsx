@@ -104,6 +104,7 @@ const Content = () => {
                 <Device
                   selectedImage={selectedImage}
                   backgroundColor={item.backgroundColor}
+                  background={item.background}
                   initialPadding={item.scale}
                   initialHorizontal={item.alignment.horizontal}
                   initialVertical={item.alignment.vertical}
