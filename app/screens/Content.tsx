@@ -1,21 +1,13 @@
 import React, {useState} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  ImageSourcePropType,
-  ScrollView,
-  Text,
-  Image,
-} from 'react-native';
+import {View, TouchableOpacity, ScrollView, Text, Image} from 'react-native';
 import {useModal} from 'react-native-modal-provider';
-import Editor from './Editor';
 import handleImagePicker from '../handlers/handleImagePicker';
 import TitleBar from '../components/TitleBar/TitleBar';
-import Device from '../components/Device/device';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import data from '../assets/json/presets.json';
 import About from './About';
+import Item from './Item';
 
 const placeholder = require('../assets/images/placeholder.webp');
 
@@ -121,89 +113,7 @@ const Content = () => {
             }}
             onLayout={event => setWidth(event.nativeEvent.layout.width)}>
             {data.map((item, index) => (
-              <View
-                key={index}
-                style={{
-                  width: (width - 24) / 2,
-                }}>
-                <View>
-                  <TouchableOpacity
-                    disabled={!selectedImage}
-                    style={{
-                      backgroundColor: 'white',
-                      width: '100%',
-                      padding: 24,
-                      borderTopLeftRadius: 12,
-                      borderTopRightRadius: 12,
-                      borderLeftWidth: 1,
-                      borderTopWidth: 1,
-                      borderRightWidth: 1,
-                      borderColor: 'rgb(220, 220, 220)',
-                    }}
-                    onPress={() => {
-                      openModal({
-                        node: (
-                          <Editor
-                            initialImage={selectedImage}
-                            backgroundColor={item.backgroundColor}
-                            initialBackground={item.background}
-                            initialPadding={item.scale}
-                            initialHorizontal={item.alignment.horizontal}
-                            initialVertical={item.alignment.vertical}
-                            initialInsetLeft={item.inset.left}
-                            initialInsetRight={item.inset.right}
-                            initialInsetTop={item.inset.top}
-                            initialInsetBottom={item.inset.bottom}
-                            initialTopExpansion={item.expansion.top}
-                            initialBottomExpansion={item.expansion.bottom}
-                            initialLeftExpansion={item.expansion.left}
-                            initialRightExpansion={item.expansion.right}
-                            initialSizing={item.sizing}
-                          />
-                        ),
-                      });
-                    }}>
-                    <Device
-                      selectedImage={selectedImage}
-                      backgroundColor={item.backgroundColor}
-                      background={item.background}
-                      initialPadding={item.scale}
-                      initialHorizontal={item.alignment.horizontal}
-                      initialVertical={item.alignment.vertical}
-                      initialInsetLeft={item.inset.left}
-                      initialInsetRight={item.inset.right}
-                      initialInsetTop={item.inset.top}
-                      initialInsetBottom={item.inset.bottom}
-                      initialTopExpansion={item.expansion.top}
-                      initialBottomExpansion={item.expansion.bottom}
-                      initialLeftExpansion={item.expansion.left}
-                      initialRightExpansion={item.expansion.right}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingHorizontal: 24,
-                    paddingVertical: 8,
-                    gap: 24,
-                    backgroundColor: '#0066FF',
-                    borderBottomLeftRadius: 12,
-                    borderBottomRightRadius: 12,
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      paddingVertical: 4,
-                      paddingHorizontal: 12,
-                      color: 'white',
-                      fontWeight: '600',
-                    }}>
-                    Share
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              <Item width={width} selectedImage={selectedImage} item={item} />
             ))}
           </View>
         </ScrollView>

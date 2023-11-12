@@ -19,6 +19,7 @@ const Device = ({
   initialBottomExpansion,
   initialLeftExpansion,
   initialRightExpansion,
+  nodeToCaptureRef,
 }: {
   selectedImage: ImageSourcePropType;
   backgroundColor?: string;
@@ -35,6 +36,7 @@ const Device = ({
   initialBottomExpansion: number;
   initialLeftExpansion: number;
   initialRightExpansion: number;
+  nodeToCaptureRef: React.RefObject<View>;
 }) => {
   const screenHeight = Dimensions.get('window').height;
   const [dimensions, setDimensions] = useState(1);
@@ -54,6 +56,7 @@ const Device = ({
             overflow: 'hidden',
           }}>
           <View
+            ref={nodeToCaptureRef}
             style={{
               aspectRatio: 9 / 16,
               backgroundColor: backgroundColor,

@@ -27,7 +27,7 @@ const About = () => {
       backgroundColor="white"
       cancellationNode={
         <TouchableOpacity onPress={closeModal}>
-          <Text style={{fontWeight: '600', color: '#0066FF'}}>Close</Text>
+          <Text style={{color: '#0066FF'}}>Close</Text>
         </TouchableOpacity>
       }
       confirmationNode={

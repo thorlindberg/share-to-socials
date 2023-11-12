@@ -45,7 +45,7 @@ const Editor = ({
   initialImage,
   backgroundColor,
   initialBackground,
-  initialBlur,
+  initialBlur = 200,
   initialPadding,
   initialHorizontal,
   initialVertical,
@@ -81,6 +81,8 @@ const Editor = ({
   const [dimensions, setDimensions] = useState(1);
   const [aspectRatio, setAspectRatio] = useState(dimensions);
 
+  const nodeToCaptureRef = useRef(null);
+
   const [colors, setColors] = useState<string[]>([
     'red',
     'green',
@@ -111,7 +113,6 @@ const Editor = ({
   */
 
   const safeAreaInsets = useSafeAreaInsets();
-  const nodeToCaptureRef = useRef(null);
 
   const [topExpansion, setTopExpansion] = useState(initialTopExpansion);
   const [bottomExpansion, setBottomExpansion] = useState(
@@ -818,7 +819,7 @@ const Editor = ({
       backgroundColor={isScrolled ? 'white' : 'rgb(235, 235, 235)'}
       cancellationNode={
         <TouchableOpacity onPress={closeModal}>
-          <Text style={{fontWeight: '600', color: '#0066FF'}}>Close</Text>
+          <Text style={{color: '#0066FF'}}>Close</Text>
         </TouchableOpacity>
       }
       titleNode={
@@ -901,6 +902,7 @@ const Editor = ({
             }}>
             <View style={{height: 400}}>
               <Device
+                nodeToCaptureRef={nodeToCaptureRef}
                 selectedImage={selectedImage}
                 backgroundColor={colorSelection}
                 background={background}
