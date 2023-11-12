@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Image,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -13,7 +14,7 @@ import handleViewCapture from '../handlers/handleViewCapture';
 import handleColorPicker from '../handlers/handleColorPicker';
 import TitleBar from '../components/TitleBar/TitleBar';
 import {useModal} from 'react-native-modal-provider';
-import Device from './Device';
+import Device from '../components/Device/device';
 import {getColors} from 'react-native-image-colors';
 
 import Color from '../assets/shapes/color.svg';
@@ -38,9 +39,10 @@ import Horizontal from '../assets/shapes/horizontal.svg';
 import HorizontalSelected from '../assets/shapes/horizontal-selected.svg';
 import Right from '../assets/shapes/right.svg';
 import RightSelected from '../assets/shapes/right-selected.svg';
+import handleImagePicker from '../handlers/handleImagePicker';
 
 const Editor = ({
-  selectedImage,
+  initialImage,
   backgroundColor,
   initialBackground,
   initialBlur,
@@ -57,7 +59,7 @@ const Editor = ({
   initialRightExpansion,
   initialSizing,
 }: {
-  selectedImage: ImageSourcePropType;
+  initialImage: ImageSourcePropType;
   backgroundColor: string;
   initialBackground: 'Color' | 'Automatic' | 'Duplicate';
   initialBlur?: number;
@@ -75,10 +77,16 @@ const Editor = ({
   initialSizing: 'Fit' | 'Fill' | 'Scale';
 }) => {
   const {closeModal} = useModal();
+  const [selectedImage, setSelectedImage] = useState(initialImage);
   const [dimensions, setDimensions] = useState(1);
   const [aspectRatio, setAspectRatio] = useState(dimensions);
 
-  const [colors, setColors] = useState<string[]>([]);
+  const [colors, setColors] = useState<string[]>([
+    'red',
+    'green',
+    'blue',
+    'purple',
+  ]);
   /*
   useEffect(() => {
     getColors(selectedImage.toString(), {
@@ -808,14 +816,56 @@ const Editor = ({
   return (
     <TitleBar
       backgroundColor={isScrolled ? 'white' : 'rgb(235, 235, 235)'}
-      cancellationColor="#0066FF"
-      cancellationText="Close"
-      cancellationAction={closeModal}
-      confirmationColor="#0066FF"
-      confirmationText="Share"
-      confirmationAction={() => handleViewCapture(nodeToCaptureRef)}
-      titleColor={'black'}
-      titleText="Instagram story"
+      cancellationNode={
+        <TouchableOpacity onPress={closeModal}>
+          <Text style={{fontWeight: '600', color: '#0066FF'}}>Close</Text>
+        </TouchableOpacity>
+      }
+      titleNode={
+        <TouchableOpacity
+          onPress={() => {
+            handleImagePicker(image => {
+              setSelectedImage(image);
+            });
+          }}>
+          <View
+            style={{
+              width: 42,
+              height: 28,
+              borderRadius: 4,
+              borderWidth: 1,
+              borderColor: 'rgb(220, 220, 220)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: isScrolled ? 'white' : 'rgb(235, 235, 235)',
+            }}>
+            <View
+              style={{
+                width: 34,
+                height: 20,
+                borderRadius: 2,
+              }}
+            />
+            {selectedImage && (
+              <Image
+                source={selectedImage}
+                style={{
+                  width: 34,
+                  height: 20,
+                  borderRadius: 2,
+                  resizeMode: 'cover',
+                  position: 'absolute',
+                }}
+              />
+            )}
+          </View>
+        </TouchableOpacity>
+      }
+      confirmationNode={
+        <TouchableOpacity onPress={() => handleViewCapture(nodeToCaptureRef)}>
+          <Text style={{fontWeight: '600', color: '#0066FF'}}>Share</Text>
+        </TouchableOpacity>
+      }
       detent="medium">
       <View
         style={{

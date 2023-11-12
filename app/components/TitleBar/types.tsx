@@ -3,15 +3,9 @@ export type DetentProps = 'small' | 'medium' | 'large';
 export interface TitleBarProps {
   children: React.ReactNode;
   backgroundColor?: String;
-  cancellationColor?: String;
-  cancellationText?: String;
-  cancellationAction?: () => void;
-  confirmationColor?: String;
-  confirmationText?: String;
-  confirmationAction?: () => void;
-  titleColor?: String;
-  titleText?: String;
-  icon?: String;
+  cancellationNode?: React.ReactNode;
+  confirmationNode?: React.ReactNode;
+  titleNode?: React.ReactNode;
   detent?: DetentProps;
   scaling?: number;
 }

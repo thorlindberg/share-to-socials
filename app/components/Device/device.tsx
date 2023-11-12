@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Dimensions, Image, ImageSourcePropType, View} from 'react-native';
-import Preview from '../components/Preview/preview';
-import Reflect from '../components/Reflect/reflect';
+import Preview from '../../components/Preview/preview';
+import Reflect from '../../components/Reflect/reflect';
 
 const Device = ({
   selectedImage,
