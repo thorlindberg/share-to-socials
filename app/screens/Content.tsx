@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   Animated,
   View,
@@ -9,15 +9,14 @@ import {
 } from 'react-native';
 import {useModal} from 'react-native-modal-provider';
 import handleImagePicker from '../handlers/handleImagePicker';
-import TitleBar from '../components/TitleBar/TitleBar';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
-
 import data from '../assets/json/presets.json';
 import About from './About';
 import Item from './Item';
 import Rounded from '../components/Rounded/Rounded';
 import {BlurView} from '@react-native-community/blur';
+import {Icon} from '@rneui/themed';
 
 const placeholder = require('../assets/images/placeholder.webp');
 
@@ -51,7 +50,7 @@ const Content = () => {
   const paddingBottom = React.useRef(new Animated.Value(0)).current;
   React.useEffect(() => {
     Animated.timing(paddingBottom, {
-      toValue: isScrolled ? 0 : 48,
+      toValue: isScrolled ? 0 : 24,
       duration: 100,
       useNativeDriver: false,
     }).start();
@@ -60,25 +59,16 @@ const Content = () => {
   const paddingVertical = React.useRef(new Animated.Value(0)).current;
   React.useEffect(() => {
     Animated.timing(paddingVertical, {
-      toValue: isScrolled ? 24 : 0,
+      toValue: isScrolled ? 12 : 0,
       duration: 100,
       useNativeDriver: false,
     }).start();
   }, [isScrolled, paddingVertical]);
 
-  const paddingHorizontal = React.useRef(new Animated.Value(0)).current;
-  React.useEffect(() => {
-    Animated.timing(paddingHorizontal, {
-      toValue: isScrolled ? 24 : 0,
-      duration: 100,
-      useNativeDriver: false,
-    }).start();
-  }, [isScrolled, paddingHorizontal]);
-
   const shadowOpacity = React.useRef(new Animated.Value(0)).current;
   React.useEffect(() => {
     Animated.timing(shadowOpacity, {
-      toValue: isScrolled ? 0.25 : 0,
+      toValue: isScrolled ? 0.15 : 0,
       duration: 100,
       useNativeDriver: false,
     }).start();
@@ -96,10 +86,10 @@ const Content = () => {
         scrollEventThrottle={16}
         style={{
           backgroundColor: 'rgb(235, 235, 235)',
-          paddingTop: viewHeight,
+          paddingTop: viewHeight + 8,
         }}>
         {Object.entries(data).map(([category, items]) => (
-          <View key={category} style={{gap: 24}}>
+          <View key={category} style={{gap: 16}}>
             <Text
               style={{
                 fontSize: 24,
@@ -152,8 +142,7 @@ const Content = () => {
         />
         <Animated.View
           style={{
-            paddingHorizontal: 24,
-            paddingTop: 12,
+            paddingHorizontal: 12,
             paddingBottom: paddingBottom,
             shadowColor: 'black',
             shadowOffset: {width: 0, height: 12},
@@ -169,7 +158,8 @@ const Content = () => {
                     ? 'rgba(235, 235, 235, 0.8)'
                     : 'rgb(235, 235, 235)',
                   paddingVertical: paddingVertical,
-                  paddingHorizontal: paddingHorizontal,
+                  paddingLeft: 12,
+                  paddingRight: 24,
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
@@ -182,36 +172,61 @@ const Content = () => {
                   }}>
                   <View
                     style={{
-                      width: 42,
-                      height: 28,
-                      borderRadius: 4,
+                      width: 56,
+                      height: 56,
+                      borderRadius: 1000,
                       borderWidth: 1,
                       borderColor: 'rgb(220, 220, 220)',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor: isScrolled
-                        ? 'white'
-                        : 'rgb(235, 235, 235)',
+                      backgroundColor: 'white',
+                      justifyContent: 'flex-end',
+                      alignItems: 'flex-end',
                     }}>
                     <View
                       style={{
-                        width: 34,
-                        height: 20,
-                        borderRadius: 2,
-                      }}
-                    />
-                    {selectedImage && (
+                        width: '100%',
+                        height: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
                       <Image
                         source={selectedImage}
                         style={{
-                          width: 34,
-                          height: 20,
-                          borderRadius: 2,
+                          width: 48,
+                          height: 48,
+                          borderRadius: 1000,
                           resizeMode: 'cover',
-                          position: 'absolute',
                         }}
                       />
-                    )}
+                    </View>
+                    <View
+                      style={{
+                        position: 'absolute',
+                        borderWidth: 1,
+                        borderRadius: 1000,
+                        borderColor: 'rgb(220, 220, 220)',
+                        backgroundColor: 'white',
+                        width: 24,
+                        height: 24,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <View
+                        style={{
+                          width: 20,
+                          height: 20,
+                          backgroundColor: '#0066FF',
+                          borderRadius: 1000,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Icon
+                          name="plus"
+                          type="font-awesome"
+                          size={12}
+                          color="white"
+                        />
+                      </View>
+                    </View>
                   </View>
                 </TouchableOpacity>
                 <Text

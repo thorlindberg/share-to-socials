@@ -38,7 +38,7 @@ const Preview = ({children}: {children: React.ReactNode}) => {
         flex: 1,
         shadowColor: 'black',
         shadowOffset: {width: 0, height: 12},
-        shadowOpacity: 0.25,
+        shadowOpacity: 0.2,
         shadowRadius: 12,
         overflow: 'visible',
       }}>

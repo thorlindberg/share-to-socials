@@ -14,6 +14,8 @@ const Item = ({width, selectedImage, item}) => {
     <View
       style={{
         width: (width - 72) / 2.5,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
       }}>
       <View
         style={{
@@ -66,7 +68,12 @@ const Item = ({width, selectedImage, item}) => {
           />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => handleViewCapture(nodeToCaptureRef)}>
+      <TouchableOpacity
+        onPress={() => handleViewCapture(nodeToCaptureRef)}
+        style={{
+          position: 'absolute',
+          width: '80%',
+        }}>
         <Rounded smooth radius={16}>
           <View
             style={{
