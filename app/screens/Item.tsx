@@ -4,6 +4,7 @@ import handleViewCapture from '../handlers/handleViewCapture';
 import {Text, TouchableOpacity, View} from 'react-native';
 import Editor from './Editor';
 import {useModal} from 'react-native-modal-provider';
+import Rounded from '../components/Rounded/Rounded';
 
 const Item = ({width, selectedImage, item}) => {
   const {openModal} = useModal();
@@ -12,18 +13,11 @@ const Item = ({width, selectedImage, item}) => {
   return (
     <View
       style={{
-        width: (width - 24) / 2,
+        width: (width - 72) / 2.5,
       }}>
       <View
         style={{
-          backgroundColor: 'white',
-          padding: 24,
-          borderTopLeftRadius: 12,
-          borderTopRightRadius: 12,
-          borderLeftWidth: 1,
-          borderTopWidth: 1,
-          borderRightWidth: 1,
-          borderColor: 'rgb(220, 220, 220)',
+          paddingBottom: 24,
         }}>
         <TouchableOpacity
           disabled={!selectedImage}
@@ -72,28 +66,24 @@ const Item = ({width, selectedImage, item}) => {
           />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        onPress={() => handleViewCapture(nodeToCaptureRef)}
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          paddingHorizontal: 24,
-          paddingVertical: 8,
-          gap: 24,
-          backgroundColor: '#0066FF',
-          borderBottomLeftRadius: 12,
-          borderBottomRightRadius: 12,
-          justifyContent: 'center',
-        }}>
-        <Text
-          style={{
-            paddingVertical: 4,
-            paddingHorizontal: 12,
-            color: 'white',
-            fontWeight: '600',
-          }}>
-          Share
-        </Text>
+      <TouchableOpacity onPress={() => handleViewCapture(nodeToCaptureRef)}>
+        <Rounded smooth radius={16}>
+          <View
+            style={{
+              alignItems: 'center',
+              width: '100%',
+              backgroundColor: '#0066FF',
+            }}>
+            <Text
+              style={{
+                paddingVertical: 12,
+                color: 'white',
+                fontWeight: '600',
+              }}>
+              Share
+            </Text>
+          </View>
+        </Rounded>
       </TouchableOpacity>
     </View>
   );
