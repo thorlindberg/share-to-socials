@@ -1,5 +1,6 @@
 import {captureRef} from 'react-native-view-shot';
 import Share from 'react-native-share';
+import Toast from 'react-native-toast-message';
 
 const handleViewCapture = async nodeToCaptureRef => {
   try {
@@ -25,10 +26,13 @@ const handleViewCapture = async nodeToCaptureRef => {
         type: 'image/jpeg',
       };
       await Share.open(options);
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Result was saved to Photos',
+      });
     }
-  } catch (error) {
-    console.error('Error capturing or sharing image:', error);
-  }
+  } catch (error) {}
 };
 
 export default handleViewCapture;

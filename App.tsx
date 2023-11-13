@@ -5,6 +5,7 @@ import Content from './app/screens/Content';
 import {DebugProvider} from './app/components/DebugProvider/provider';
 import {ModalProvider} from 'react-native-modal-provider';
 import {ScrollProvider} from 'react-native-scroll-provider';
+import Toast from 'react-native-toast-message';
 
 let Root = function App() {
   return (
@@ -14,6 +15,7 @@ let Root = function App() {
           <ScrollProvider>
             <ModalProvider>
               <Content />
+              <Toast />
             </ModalProvider>
           </ScrollProvider>
         </DebugProvider>
