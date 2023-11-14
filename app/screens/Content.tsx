@@ -18,12 +18,15 @@ import Rounded from '../components/Rounded/Rounded';
 import {BlurView} from '@react-native-community/blur';
 import {Icon} from '@rneui/themed';
 
-const placeholder = require('../assets/images/placeholder.webp');
+const placeholder = require('../assets/images/placeholder.jpg');
 
 const Content = () => {
   const safeAreaInsets = useSafeAreaInsets();
   const {openModal} = useModal();
   const [selectedImage, setSelectedImage] = useState(placeholder);
+
+  const [imagePickerWidth, setImagePickerWidth] = useState(0);
+  const [chevronWidth, setChevronWidth] = useState(0);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const handleScroll = (event: {nativeEvent: {contentOffset: {y: number}}}) => {
@@ -37,13 +40,6 @@ const Content = () => {
 
   const [width, setWidth] = useState(0);
   const [viewHeight, setViewHeight] = useState(0);
-
-  const handleViewLayout = (event: {
-    nativeEvent: {layout: {height: number}};
-  }) => {
-    const height = event.nativeEvent.layout.height;
-    setViewHeight(height);
-  };
 
   const scrollViewRef = React.useRef<ScrollView | null>(null);
 
@@ -86,54 +82,58 @@ const Content = () => {
         scrollEventThrottle={16}
         style={{
           backgroundColor: 'rgb(235, 235, 235)',
-          paddingTop: viewHeight + 8,
         }}>
-        {Object.entries(data).map(([category, items]) => (
-          <View key={category} style={{gap: 16}}>
-            <Text
-              style={{
-                fontSize: 24,
-                fontWeight: '600',
-                paddingHorizontal: 24,
-              }}>
-              {category}
-            </Text>
-            <ScrollView
-              horizontal
-              onLayout={event => setWidth(event.nativeEvent.layout.width)}
-              showsHorizontalScrollIndicator={false}>
-              <View
+        <View
+          style={{
+            paddingTop: viewHeight + 8,
+          }}>
+          {Object.entries(data).map(([category, items]) => (
+            <View key={category} style={{gap: 16}}>
+              <Text
                 style={{
+                  fontSize: 24,
+                  fontWeight: '600',
                   paddingHorizontal: 24,
-                  paddingBottom: safeAreaInsets.bottom
-                    ? safeAreaInsets.bottom + 12
-                    : 24,
-                  gap: 24,
-                  flexDirection: 'row',
                 }}>
-                {items.map((item, index) => (
-                  <Item
-                    key={index}
-                    width={width}
-                    selectedImage={selectedImage}
-                    item={item}
-                  />
-                ))}
-              </View>
-            </ScrollView>
-          </View>
-        ))}
+                {category}
+              </Text>
+              <ScrollView
+                horizontal
+                onLayout={event => setWidth(event.nativeEvent.layout.width)}
+                showsHorizontalScrollIndicator={false}>
+                <View
+                  style={{
+                    paddingHorizontal: 24,
+                    paddingBottom: safeAreaInsets.bottom
+                      ? safeAreaInsets.bottom + 12
+                      : 24,
+                    gap: 24,
+                    flexDirection: 'row',
+                  }}>
+                  {items.map((item, index) => (
+                    <Item
+                      key={index}
+                      width={width}
+                      selectedImage={selectedImage}
+                      item={item}
+                    />
+                  ))}
+                </View>
+              </ScrollView>
+            </View>
+          ))}
+        </View>
       </ScrollView>
       <View
         style={{
           position: 'absolute',
           width: '100%',
         }}
-        onLayout={handleViewLayout}>
+        onLayout={event => setViewHeight(event.nativeEvent.layout.height)}>
         <LinearGradient
           colors={[
-            'rgb(235, 235, 235)',
-            'rgb(235, 235, 235)',
+            'rgba(235, 235, 235, 1)',
+            'rgba(235, 235, 235, 0.8)',
             'rgba(255, 255, 255, 0)',
           ]}
           start={{x: 0, y: 0}}
@@ -165,6 +165,9 @@ const Content = () => {
                   alignItems: 'center',
                 }}>
                 <TouchableOpacity
+                  onLayout={event =>
+                    setImagePickerWidth(event.nativeEvent.layout.width)
+                  }
                   onPress={() => {
                     handleImagePicker(image => {
                       setSelectedImage(image);
@@ -229,22 +232,51 @@ const Content = () => {
                     </View>
                   </View>
                 </TouchableOpacity>
-                <Text
-                  style={{
-                    fontWeight: '600',
-                  }}>
-                  Instagram Story
-                </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    openModal({
-                      node: <About />,
-                    });
-                  }}>
-                  <Text style={{fontWeight: '600', color: '#0066FF'}}>
-                    About
-                  </Text>
-                </TouchableOpacity>
+                <View style={{alignItems: 'center', gap: 4}}>
+                  <Text>Share to</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 4,
+                      paddingLeft: chevronWidth + 4,
+                    }}>
+                    <Text
+                      style={{
+                        fontWeight: '600',
+                        color: '#0066FF',
+                      }}>
+                      Instagram
+                    </Text>
+                    <Icon
+                      onLayout={event =>
+                        setChevronWidth(event.nativeEvent.layout.width)
+                      }
+                      name="chevron-down"
+                      type="entypo"
+                      size={16}
+                      color="#0066FF"
+                    />
+                  </View>
+                </View>
+                <View style={{width: imagePickerWidth, alignItems: 'flex-end'}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      openModal({
+                        node: <About />,
+                      });
+                    }}
+                    style={{gap: 4, justifyContent: 'center'}}>
+                    <Icon
+                      name="info"
+                      type="foundation"
+                      size={20}
+                      color="#0066FF"
+                    />
+                    <Text style={{fontWeight: '600', color: '#0066FF'}}>
+                      Info
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </Animated.View>
             </BlurView>
           </Rounded>

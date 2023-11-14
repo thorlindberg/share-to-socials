@@ -804,19 +804,9 @@ const Editor = ({
     </View>
   );
 
-  const [isScrolled, setIsScrolled] = useState(false);
-  const handleScroll = (event: {nativeEvent: {contentOffset: {y: number}}}) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY > 0) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
-    }
-  };
-
   return (
     <TitleBar
-      backgroundColor={isScrolled ? 'white' : 'rgb(235, 235, 235)'}
+      backgroundColor='rgb(235, 235, 235)'
       cancellationNode={
         <TouchableOpacity onPress={closeModal}>
           <Text style={{color: '#0066FF'}}>Close</Text>
@@ -838,7 +828,7 @@ const Editor = ({
               borderColor: 'rgb(220, 220, 220)',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: isScrolled ? 'white' : 'rgb(235, 235, 235)',
+              backgroundColor: 'rgb(235, 235, 235)',
             }}>
             <View
               style={{
@@ -870,64 +860,54 @@ const Editor = ({
       detent="medium">
       <View
         style={{
-          height: 1,
-          backgroundColor: 'rgb(200, 200, 200)',
-          opacity: isScrolled ? 1 : 0,
-        }}
-      />
-      <ScrollView
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        style={{
-          backgroundColor: 'rgb(235, 235, 235)',
+          flex: 1,
+          paddingBottom: safeAreaInsets.bottom
+            ? safeAreaInsets.bottom + 12
+            : 24,
+          gap: 18,
         }}>
-        <View
-          style={{
-            flex: 1,
-            paddingHorizontal: 24,
-            paddingBottom: safeAreaInsets.bottom
-              ? safeAreaInsets.bottom + 12
-              : 24,
-            gap: 18,
-          }}>
+        <View style={{flex: 1, paddingHorizontal: 24}}>
           <View
             style={{
-              backgroundColor: 'white',
+              flex: 1,
               borderRadius: 12,
               borderWidth: 1,
               borderColor: 'rgb(220, 220, 220)',
+              backgroundColor: 'white',
               padding: 24,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <View style={{height: 400}}>
-              <Device
-                nodeToCaptureRef={nodeToCaptureRef}
-                selectedImage={selectedImage}
-                backgroundColor={colorSelection}
-                background={background}
-                blur={blur}
-                initialPadding={paddingValue}
-                initialHorizontal={horizontal}
-                initialVertical={vertical}
-                initialInsetLeft={insetLeft}
-                initialInsetRight={insetRight}
-                initialInsetTop={insetTop}
-                initialInsetBottom={insetBottom}
-                initialTopExpansion={topExpansion}
-                initialBottomExpansion={bottomExpansion}
-                initialLeftExpansion={leftExpansion}
-                initialRightExpansion={rightExpansion}
-              />
-            </View>
+            <Device
+              nodeToCaptureRef={nodeToCaptureRef}
+              selectedImage={selectedImage}
+              backgroundColor={colorSelection}
+              background={background}
+              blur={blur}
+              initialPadding={paddingValue}
+              initialHorizontal={horizontal}
+              initialVertical={vertical}
+              initialInsetLeft={insetLeft}
+              initialInsetRight={insetRight}
+              initialInsetTop={insetTop}
+              initialInsetBottom={insetBottom}
+              initialTopExpansion={topExpansion}
+              initialBottomExpansion={bottomExpansion}
+              initialLeftExpansion={leftExpansion}
+              initialRightExpansion={rightExpansion}
+            />
           </View>
-          {backgrounds}
-          {size}
-          {sizing !== 'Fill' && verticalalignment}
-          {sizing !== 'Fill' && horizontalalignment}
-          {controls}
         </View>
-      </ScrollView>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View style={{flexDirection: 'row', paddingHorizontal: 24, gap: 24}}>
+            {backgrounds}
+            {size}
+            {sizing !== 'Fill' && verticalalignment}
+            {sizing !== 'Fill' && horizontalalignment}
+            {controls}
+          </View>
+        </ScrollView>
+      </View>
     </TitleBar>
   );
 };
