@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {Dimensions, View} from 'react-native';
 import Rounded from '../Rounded/Rounded';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -9,6 +9,7 @@ const Preview = ({children}: {children: React.ReactNode}) => {
   const homeIndicatorHeight = safeAreaInsets.bottom;
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
+  const [viewHeight, setViewHeight] = useState(0);
 
   const statusBar = (
     <View
@@ -34,6 +35,7 @@ const Preview = ({children}: {children: React.ReactNode}) => {
 
   return (
     <View
+      onLayout={event => setViewHeight(event.nativeEvent.layout.height)}
       style={{
         flex: 1,
         shadowColor: 'black',
@@ -44,7 +46,7 @@ const Preview = ({children}: {children: React.ReactNode}) => {
       }}>
       <Rounded
         smooth
-        radius={safeAreaInsets.bottom ? (100 / screenHeight) * 200 : 0}
+        radius={safeAreaInsets.bottom ? viewHeight * 0.08 : 0}
         style={{
           height: '100%',
           aspectRatio: screenWidth / screenHeight,

@@ -1,17 +1,26 @@
 import React, {useRef} from 'react';
 import Device from '../components/Device/device';
-import {TouchableOpacity, View} from 'react-native';
+import {ImageSourcePropType, TouchableOpacity, View} from 'react-native';
 import Editor from './Editor';
 import {useModal} from 'react-native-modal-provider';
 
-const Item = ({width, selectedImage, item}) => {
+const Item = ({
+  width,
+  selectedImage,
+  item,
+  rowCount,
+}: {
+  width: number;
+  selectedImage: ImageSourcePropType;
+  rowCount: number;
+}) => {
   const {openModal} = useModal();
   const nodeToCaptureRef = useRef(null);
 
   return (
     <View
       style={{
-        width: (width - 72) / 2.5,
+        width: (width - rowCount * 18) / (rowCount - 1 + 1 / 3),
         justifyContent: 'flex-end',
         alignItems: 'center',
       }}>

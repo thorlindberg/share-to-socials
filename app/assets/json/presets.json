@@ -1,5 +1,95 @@
 {
-  "Basic": [
+  "Recent": [
+    {
+      "backgroundColor": "white",
+      "background": "Color",
+      "scale": 1,
+      "alignment": {
+        "horizontal": "center",
+        "vertical": "center"
+      },
+      "inset": {
+        "left": 0,
+        "top": 0,
+        "bottom": 0,
+        "right": 0
+      },
+      "expansion": {
+        "top": "0",
+        "bottom": "0",
+        "left": "0",
+        "right": "0"
+      },
+      "sizing": "Fit"
+    },
+    {
+      "backgroundColor": "white",
+      "background": "Color",
+      "scale": 1,
+      "alignment": {
+        "horizontal": "center",
+        "vertical": "center"
+      },
+      "inset": {
+        "left": 0,
+        "top": 0,
+        "bottom": 0,
+        "right": 0
+      },
+      "expansion": {
+        "top": "0",
+        "bottom": "0",
+        "left": "0",
+        "right": "0"
+      },
+      "sizing": "Fit"
+    },
+    {
+      "backgroundColor": "white",
+      "background": "Color",
+      "scale": 1,
+      "alignment": {
+        "horizontal": "center",
+        "vertical": "center"
+      },
+      "inset": {
+        "left": 0,
+        "top": 0,
+        "bottom": 0,
+        "right": 0
+      },
+      "expansion": {
+        "top": "0",
+        "bottom": "0",
+        "left": "0",
+        "right": "0"
+      },
+      "sizing": "Fit"
+    },
+    {
+      "backgroundColor": "white",
+      "background": "Color",
+      "scale": 1,
+      "alignment": {
+        "horizontal": "center",
+        "vertical": "center"
+      },
+      "inset": {
+        "left": 0,
+        "top": 0,
+        "bottom": 0,
+        "right": 0
+      },
+      "expansion": {
+        "top": "0",
+        "bottom": "0",
+        "left": "0",
+        "right": "0"
+      },
+      "sizing": "Fit"
+    }
+  ],
+  "Featured": [
     {
       "backgroundColor": "white",
       "background": "Color",
@@ -67,55 +157,7 @@
       "sizing": "Fit"
     }
   ],
-  "Complex": [
-    {
-      "backgroundColor": "white",
-      "background": "Color",
-      "scale": 1,
-      "alignment": {
-        "horizontal": "center",
-        "vertical": "center"
-      },
-      "inset": {
-        "left": 0,
-        "top": 0,
-        "bottom": 0,
-        "right": 0
-      },
-      "expansion": {
-        "top": "0",
-        "bottom": "0",
-        "left": "0",
-        "right": "0"
-      },
-      "sizing": "Fit"
-    }
-  ],
-  "Blank": [
-    {
-      "backgroundColor": "white",
-      "background": "Color",
-      "scale": 1,
-      "alignment": {
-        "horizontal": "center",
-        "vertical": "center"
-      },
-      "inset": {
-        "left": 0,
-        "top": 0,
-        "bottom": 0,
-        "right": 0
-      },
-      "expansion": {
-        "top": "0",
-        "bottom": "0",
-        "left": "0",
-        "right": "0"
-      },
-      "sizing": "Fit"
-    }
-  ],
-  "Simple": [
+  "Experimental": [
     {
       "backgroundColor": "white",
       "background": "Color",
