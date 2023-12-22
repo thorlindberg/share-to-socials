@@ -1,9 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Image, View} from 'react-native';
 import {ReflectProps} from './types';
 import useStyle from './styles';
 
-const Reflect = ({source, style, expansion, dimensions, setDimensions, aspectRatio, setAspectRatio}: ReflectProps) => {
+const Reflect = ({
+  source,
+  style,
+  expansion,
+  dimensions,
+  setDimensions,
+  aspectRatio,
+  setAspectRatio,
+}: ReflectProps) => {
   const styles = useStyle(dimensions, aspectRatio, expansion);
 
   const transformations = [
@@ -49,7 +57,13 @@ const Reflect = ({source, style, expansion, dimensions, setDimensions, aspectRat
       dimensions /
         (1 + (1 / 100) * expansion.top + (1 / 100) * expansion.bottom),
     );
-  }, [aspectRatio, dimensions, expansion.bottom, expansion.top]);
+  }, [
+    aspectRatio,
+    dimensions,
+    expansion.bottom,
+    expansion.top,
+    setAspectRatio,
+  ]);
 
   const grid = [];
   for (let row = 0; row < 3; row++) {

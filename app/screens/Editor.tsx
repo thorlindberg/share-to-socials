@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ImageSourcePropType,
   ScrollView,
@@ -6,89 +6,48 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Image,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import handleViewCapture from '../handlers/handleViewCapture';
 import handleColorPicker from '../handlers/handleColorPicker';
-import TitleBar from '../components/TitleBar/TitleBar';
-import {useModal} from 'react-native-modal-provider';
-import Device from '../components/Device/device';
-import {getColors} from 'react-native-image-colors';
-
+// import { getColors } from 'react-native-image-colors';
+import handleViewCapture from '../handlers/handleViewCapture';
 import Color from '../assets/shapes/color.svg';
-
 import Top from '../assets/shapes/top.svg';
 import TopSelected from '../assets/shapes/top-selected.svg';
 import Vertical from '../assets/shapes/vertical.svg';
 import VerticalSelected from '../assets/shapes/vertical-selected.svg';
 import Bottom from '../assets/shapes/bottom.svg';
 import BottomSelected from '../assets/shapes/bottom-selected.svg';
-
 import Fit from '../assets/shapes/fit.svg';
 import FitSelected from '../assets/shapes/fit-selected.svg';
 import Fill from '../assets/shapes/fill.svg';
 import FillSelected from '../assets/shapes/fill-selected.svg';
 import Scale from '../assets/shapes/scale.svg';
 import ScaleSelected from '../assets/shapes/scale-selected.svg';
-
 import Left from '../assets/shapes/left.svg';
 import LeftSelected from '../assets/shapes/left-selected.svg';
 import Horizontal from '../assets/shapes/horizontal.svg';
 import HorizontalSelected from '../assets/shapes/horizontal-selected.svg';
 import Right from '../assets/shapes/right.svg';
 import RightSelected from '../assets/shapes/right-selected.svg';
-import handleImagePicker from '../handlers/handleImagePicker';
+import {Icon} from '@rneui/themed';
+import Composite from '../components/Composite/composite';
 
 const Editor = ({
-  initialImage,
-  backgroundColor,
-  initialBackground,
-  initialBlur = 200,
-  initialPadding,
-  initialHorizontal,
-  initialVertical,
-  initialInsetLeft,
-  initialInsetRight,
-  initialInsetTop,
-  initialInsetBottom,
-  initialTopExpansion,
-  initialBottomExpansion,
-  initialLeftExpansion,
-  initialRightExpansion,
-  initialSizing,
+  selectedImage,
+  item,
+  setSelectedItem,
+  setIsPreviewing,
+  nodeToCaptureRef,
 }: {
-  initialImage: ImageSourcePropType;
-  backgroundColor: string;
-  initialBackground: 'Color' | 'Automatic' | 'Duplicate';
-  initialBlur?: number;
-  initialPadding: number;
-  initialHorizontal: 'flex-start' | 'center' | 'flex-end';
-  initialVertical: 'flex-start' | 'center' | 'flex-end';
-  initialInsetLeft: number;
-  initialInsetRight: number;
-  initialInsetTop: number;
-  initialInsetBottom: number;
-  initialTopExpansion: string;
-  initialBottomExpansion: string;
-  initialLeftExpansion: string;
-  initialRightExpansion: string;
-  initialSizing: 'Fit' | 'Fill' | 'Scale';
+  selectedImage: ImageSourcePropType;
+  item: any;
+  setSelectedItem: (item: any) => void;
+  setIsPreviewing: (value: boolean) => void;
+  nodeToCaptureRef: React.RefObject<View>;
 }) => {
-  const {closeModal} = useModal();
-  const [selectedImage, setSelectedImage] = useState(initialImage);
-  const [dimensions, setDimensions] = useState(1);
-  const [aspectRatio, setAspectRatio] = useState(dimensions);
-
-  const nodeToCaptureRef = useRef(null);
-
-  const [colors, setColors] = useState<string[]>([
-    'red',
-    'green',
-    'blue',
-    'purple',
-  ]);
+  const [colors] = useState<string[]>(['red', 'green', 'blue', 'purple']); // [colors, setColors]
   /*
   useEffect(() => {
     getColors(selectedImage.toString(), {
@@ -113,24 +72,23 @@ const Editor = ({
   */
 
   const safeAreaInsets = useSafeAreaInsets();
+  const [topExpansion, setTopExpansion] = useState(item.expansion.top);
+  const [bottomExpansion, setBottomExpansion] = useState(item.expansion.bottom);
+  const [leftExpansion, setLeftExpansion] = useState(item.expansion.left);
+  const [rightExpansion, setRightExpansion] = useState(item.expansion.right);
+  const [colorSelection, setColorSelection] = useState(item.backgroundColor);
+  const [paddingValue, setPaddingValue] = useState(item.scale);
+  const [sizing, setSizing] = useState(item.sizing);
+  const [background, setBackground] = useState(item.background);
+  const [horizontal, setHorizontal] = useState(item.alignment.horizontal);
+  const [vertical, setVertical] = useState(item.alignment.vertical);
+  const [insetTop, setInsetTop] = useState(item.inset.top);
+  const [insetBottom, setInsetBottom] = useState(item.inset.bottom);
+  const [insetLeft, setInsetLeft] = useState(item.inset.left);
+  const [insetRight, setInsetRight] = useState(item.inset.right);
 
-  const [topExpansion, setTopExpansion] = useState(initialTopExpansion);
-  const [bottomExpansion, setBottomExpansion] = useState(
-    initialBottomExpansion,
-  );
-  const [leftExpansion, setLeftExpansion] = useState(initialLeftExpansion);
-  const [rightExpansion, setRightExpansion] = useState(initialRightExpansion);
-  const [colorSelection, setColorSelection] = useState(backgroundColor);
-  const [paddingValue, setPaddingValue] = useState(initialPadding);
-  const [sizing, setSizing] = useState(initialSizing);
-  const [background, setBackground] = useState(initialBackground);
-  const [blur, setBlur] = useState(initialBlur);
-  const [horizontal, setHorizontal] = useState(initialHorizontal);
-  const [vertical, setVertical] = useState(initialVertical);
-  const [insetTop, setInsetTop] = useState(initialInsetTop);
-  const [insetBottom, setInsetBottom] = useState(initialInsetBottom);
-  const [insetLeft, setInsetLeft] = useState(initialInsetLeft);
-  const [insetRight, setInsetRight] = useState(initialInsetRight);
+  const [blur, setBlur] = useState(200);
+
   useEffect(() => {
     setHorizontal('center');
     setVertical('center');
@@ -139,11 +97,6 @@ const Editor = ({
     setInsetLeft(0);
     setInsetRight(0);
   }, [sizing]);
-
-  const [fillSize, setFillSize] = useState(0);
-  useEffect(() => {
-    setFillSize((16 / 9) * aspectRatio);
-  }, [aspectRatio, selectedImage]);
 
   const controls = (
     <View
@@ -225,7 +178,7 @@ const Editor = ({
           },
           {
             name: 'Fill',
-            scale: fillSize,
+            scale: 16 / 9,
             node: <Fill height={56} />,
             selected: <FillSelected height={56} />,
           },
@@ -235,29 +188,30 @@ const Editor = ({
             node: <Scale height={56} />,
             selected: <ScaleSelected height={56} />,
           },
-        ].map((item, index) => (
+        ].map((option, index) => (
           <TouchableOpacity
             key={index}
-            activeOpacity={sizing === item.name ? 1 : 0.2}
+            activeOpacity={sizing === option.name ? 1 : 0.2}
             onPress={() => {
-              setSizing(item.name);
-              setPaddingValue(item.scale);
+              setSizing(option.name);
+              setPaddingValue(option.scale);
             }}
             style={{flex: 1, alignItems: 'center', gap: 12}}>
-            {sizing === item.name ? item.selected : item.node}
+            {sizing === option.name ? option.selected : option.node}
             <View
               style={{
                 paddingVertical: 4,
                 paddingHorizontal: 12,
-                backgroundColor: sizing === item.name ? '#0066FF' : 'white',
+                backgroundColor: sizing === option.name ? '#0066FF' : 'white',
                 borderRadius: 1000,
               }}>
               <Text
                 style={{
-                  color: sizing === item.name ? 'white' : 'rgb(100, 100, 100)',
+                  color:
+                    sizing === option.name ? 'white' : 'rgb(100, 100, 100)',
                   fontWeight: '600',
                 }}>
-                {item.name}
+                {option.name}
               </Text>
             </View>
           </TouchableOpacity>
@@ -302,6 +256,74 @@ const Editor = ({
     </View>
   );
 
+  const preview = (
+    <TouchableOpacity onPress={() => setIsPreviewing(true)}>
+      <View
+        style={{
+          backgroundColor: 'white',
+          borderRadius: 12,
+          borderWidth: 1,
+          borderColor: 'rgb(220, 220, 220)',
+        }}>
+        <View
+          style={{
+            paddingVertical: 24,
+            paddingHorizontal: 12,
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <View
+            style={{
+              height: 250,
+              overflow: 'hidden',
+              borderRadius: 8,
+              borderWidth: 3,
+              borderColor: 'rgb(230, 230, 230)',
+            }}>
+            <Composite
+              selectedImage={selectedImage}
+              backgroundColor={item.backgroundColor}
+              background={item.background}
+              initialPadding={item.scale}
+              initialHorizontal={item.alignment.horizontal}
+              initialVertical={item.alignment.vertical}
+              initialInsetLeft={item.inset.left}
+              initialInsetRight={item.inset.right}
+              initialInsetTop={item.inset.top}
+              initialInsetBottom={item.inset.bottom}
+              initialTopExpansion={item.expansion.top}
+              initialBottomExpansion={item.expansion.bottom}
+              initialLeftExpansion={item.expansion.left}
+              initialRightExpansion={item.expansion.right}
+            />
+          </View>
+        </View>
+        <View
+          style={{
+            height: 1,
+            backgroundColor: 'rgb(225, 225, 225)',
+          }}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingHorizontal: 24,
+            paddingVertical: 12,
+            justifyContent: 'space-between',
+          }}>
+          <Text>Preview in fullscreen</Text>
+          <Icon
+            name="chevron-right"
+            type="feather"
+            size={24}
+            color="rgb(180, 180, 180)"
+          />
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
   const backgrounds = (
     <View
       style={{
@@ -332,29 +354,30 @@ const Editor = ({
             node: <Fill height={56} />,
             selected: <FillSelected height={56} />,
           },
-        ].map((item, index) => (
+        ].map((option, index) => (
           <TouchableOpacity
             key={index}
-            activeOpacity={background === item.name ? 1 : 0.2}
+            activeOpacity={background === option.name ? 1 : 0.2}
             onPress={() => {
-              setBackground(item.name);
+              setBackground(option.name);
             }}
             style={{flex: 1, alignItems: 'center', gap: 12}}>
-            {background === item.name ? item.selected : item.node}
+            {background === option.name ? option.selected : option.node}
             <View
               style={{
                 paddingVertical: 4,
                 paddingHorizontal: 12,
-                backgroundColor: background === item.name ? '#0066FF' : 'white',
+                backgroundColor:
+                  background === option.name ? '#0066FF' : 'white',
                 borderRadius: 1000,
               }}>
               <Text
                 style={{
                   color:
-                    background === item.name ? 'white' : 'rgb(100, 100, 100)',
+                    background === option.name ? 'white' : 'rgb(100, 100, 100)',
                   fontWeight: '600',
                 }}>
-                {item.name}
+                {option.name}
               </Text>
             </View>
           </TouchableOpacity>
@@ -422,11 +445,11 @@ const Editor = ({
               paddingVertical: 12,
               justifyContent: 'space-between',
             }}>
-            {colors.map((item, index) => (
+            {colors.map((option, index) => (
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  setColorSelection(item);
+                  setColorSelection(option);
                 }}>
                 <View
                   style={{
@@ -443,7 +466,7 @@ const Editor = ({
                       width: 34,
                       height: 20,
                       borderRadius: 2,
-                      backgroundColor: item,
+                      backgroundColor: option,
                     }}
                   />
                 </View>
@@ -531,32 +554,32 @@ const Editor = ({
             node: <Bottom height={56} />,
             selected: <BottomSelected height={56} />,
           },
-        ].map((item, index) => (
+        ].map((option, index) => (
           <TouchableOpacity
             key={index}
-            activeOpacity={vertical === item.alignment ? 1 : 0.2}
+            activeOpacity={vertical === option.alignment ? 1 : 0.2}
             onPress={() => {
-              setVertical(item.alignment);
+              setVertical(option.alignment);
             }}
             style={{flex: 1, alignItems: 'center', gap: 12}}>
-            {vertical === item.alignment ? item.selected : item.node}
+            {vertical === option.alignment ? option.selected : option.node}
             <View
               style={{
                 paddingVertical: 4,
                 paddingHorizontal: 12,
                 backgroundColor:
-                  vertical === item.alignment ? '#0066FF' : 'white',
+                  vertical === option.alignment ? '#0066FF' : 'white',
                 borderRadius: 1000,
               }}>
               <Text
                 style={{
                   color:
-                    vertical === item.alignment
+                    vertical === option.alignment
                       ? 'white'
                       : 'rgb(100, 100, 100)',
                   fontWeight: '600',
                 }}>
-                {item.name}
+                {option.name}
               </Text>
             </View>
           </TouchableOpacity>
@@ -684,32 +707,32 @@ const Editor = ({
             node: <Right height={56} />,
             selected: <RightSelected height={56} />,
           },
-        ].map((item, index) => (
+        ].map((option, index) => (
           <TouchableOpacity
             key={index}
-            activeOpacity={horizontal === item.alignment ? 1 : 0.2}
+            activeOpacity={horizontal === option.alignment ? 1 : 0.2}
             onPress={() => {
-              setHorizontal(item.alignment);
+              setHorizontal(option.alignment);
             }}
             style={{flex: 1, alignItems: 'center', gap: 12}}>
-            {horizontal === item.alignment ? item.selected : item.node}
+            {horizontal === option.alignment ? option.selected : option.node}
             <View
               style={{
                 paddingVertical: 4,
                 paddingHorizontal: 12,
                 backgroundColor:
-                  horizontal === item.alignment ? '#0066FF' : 'white',
+                  horizontal === option.alignment ? '#0066FF' : 'white',
                 borderRadius: 1000,
               }}>
               <Text
                 style={{
                   color:
-                    horizontal === item.alignment
+                    horizontal === option.alignment
                       ? 'white'
                       : 'rgb(100, 100, 100)',
                   fontWeight: '600',
                 }}>
-                {item.name}
+                {option.name}
               </Text>
             </View>
           </TouchableOpacity>
@@ -805,101 +828,56 @@ const Editor = ({
   );
 
   return (
-    <TitleBar
-      backgroundColor='rgb(235, 235, 235)'
-      cancellationNode={
-        <TouchableOpacity onPress={closeModal}>
-          <Text style={{color: '#0066FF'}}>Close</Text>
-        </TouchableOpacity>
-      }
-      titleNode={
+    <View
+      style={{
+        height: '100%',
+        width: '100%',
+        backgroundColor: 'white',
+        borderTopRightRadius: 56,
+        borderBottomRightRadius: 56,
+      }}>
+      <View
+        style={{
+          backgroundColor: '#0066FF',
+          paddingTop: safeAreaInsets.top,
+          alignItems: 'center',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingHorizontal: 20,
+          paddingBottom: 10,
+          borderTopRightRadius: 56,
+        }}>
         <TouchableOpacity
-          onPress={() => {
-            handleImagePicker(image => {
-              setSelectedImage(image);
-            });
-          }}>
-          <View
-            style={{
-              width: 42,
-              height: 28,
-              borderRadius: 4,
-              borderWidth: 1,
-              borderColor: 'rgb(220, 220, 220)',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'rgb(235, 235, 235)',
-            }}>
-            <View
-              style={{
-                width: 34,
-                height: 20,
-                borderRadius: 2,
-              }}
-            />
-            {selectedImage && (
-              <Image
-                source={selectedImage}
-                style={{
-                  width: 34,
-                  height: 20,
-                  borderRadius: 2,
-                  resizeMode: 'cover',
-                  position: 'absolute',
-                }}
-              />
-            )}
-          </View>
+          onPress={() => setSelectedItem(null)}
+          style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
+          <Icon name="chevron-left" type="feather" size={24} color="white" />
+          <Text style={{fontSize: 16, color: 'white'}}>Browse</Text>
         </TouchableOpacity>
-      }
-      confirmationNode={
-        <TouchableOpacity onPress={() => handleViewCapture(nodeToCaptureRef)}>
-          <Text style={{fontWeight: '600', color: '#0066FF'}}>Share</Text>
+        <TouchableOpacity
+          onPress={() => handleViewCapture(nodeToCaptureRef)}
+          style={{gap: 12}}>
+          <Text style={{fontSize: 16, color: 'white', fontWeight: '600'}}>
+            Share
+          </Text>
         </TouchableOpacity>
-      }
-      detent="medium">
+      </View>
       <View
         style={{
           flex: 1,
-          paddingBottom: safeAreaInsets.bottom
-            ? safeAreaInsets.bottom + 12
-            : 24,
-          gap: 18,
+          backgroundColor: 'rgb(235, 235, 235)',
+          borderBottomRightRadius: 56,
         }}>
-        <View style={{flex: 1, paddingHorizontal: 24}}>
+        <ScrollView
+          style={{
+            borderBottomRightRadius: 56,
+          }}>
           <View
             style={{
-              flex: 1,
-              borderRadius: 12,
-              borderWidth: 1,
-              borderColor: 'rgb(220, 220, 220)',
-              backgroundColor: 'white',
-              padding: 24,
-              justifyContent: 'center',
-              alignItems: 'center',
+              padding: 20,
+              gap: 16,
+              paddingBottom: safeAreaInsets.bottom ? safeAreaInsets.bottom : 20,
             }}>
-            <Device
-              nodeToCaptureRef={nodeToCaptureRef}
-              selectedImage={selectedImage}
-              backgroundColor={colorSelection}
-              background={background}
-              blur={blur}
-              initialPadding={paddingValue}
-              initialHorizontal={horizontal}
-              initialVertical={vertical}
-              initialInsetLeft={insetLeft}
-              initialInsetRight={insetRight}
-              initialInsetTop={insetTop}
-              initialInsetBottom={insetBottom}
-              initialTopExpansion={topExpansion}
-              initialBottomExpansion={bottomExpansion}
-              initialLeftExpansion={leftExpansion}
-              initialRightExpansion={rightExpansion}
-            />
-          </View>
-        </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={{flexDirection: 'row', paddingHorizontal: 24, gap: 24}}>
+            {preview}
             {backgrounds}
             {size}
             {sizing !== 'Fill' && verticalalignment}
@@ -908,7 +886,7 @@ const Editor = ({
           </View>
         </ScrollView>
       </View>
-    </TitleBar>
+    </View>
   );
 };
 
