@@ -77,8 +77,6 @@ const Editor = ({
   const [leftExpansion, setLeftExpansion] = useState(item.expansion.left);
   const [rightExpansion, setRightExpansion] = useState(item.expansion.right);
   const [colorSelection, setColorSelection] = useState(item.backgroundColor);
-  const [horizontal, setHorizontal] = useState(item.alignment.horizontal);
-  const [vertical, setVertical] = useState(item.alignment.vertical);
 
   useEffect(() => {
     setSelectedItem({
@@ -123,7 +121,7 @@ const Editor = ({
         right: 0,
       },
     });
-  }, [item, item.sizing, setSelectedItem]);
+  }, [item, item.sizing, setSelectedItem]); // should only be `item.sizing`
 
   const controls = (
     <View
@@ -591,24 +589,36 @@ const Editor = ({
         ].map((option, index) => (
           <TouchableOpacity
             key={index}
-            activeOpacity={vertical === option.alignment ? 1 : 0.2}
+            activeOpacity={
+              item.alignment.vertical === option.alignment ? 1 : 0.2
+            }
             onPress={() => {
-              setVertical(option.alignment);
+              setSelectedItem({
+                ...item,
+                alignment: {
+                  ...item.alignment,
+                  vertical: option.alignment,
+                },
+              });
             }}
             style={{flex: 1, alignItems: 'center', gap: 12}}>
-            {vertical === option.alignment ? option.selected : option.node}
+            {item.alignment.vertical === option.alignment
+              ? option.selected
+              : option.node}
             <View
               style={{
                 paddingVertical: 4,
                 paddingHorizontal: 12,
                 backgroundColor:
-                  vertical === option.alignment ? '#0066FF' : 'white',
+                  item.alignment.vertical === option.alignment
+                    ? '#0066FF'
+                    : 'white',
                 borderRadius: 1000,
               }}>
               <Text
                 style={{
                   color:
-                    vertical === option.alignment
+                    item.alignment.vertical === option.alignment
                       ? 'white'
                       : 'rgb(100, 100, 100)',
                   fontWeight: '600',
@@ -619,7 +629,7 @@ const Editor = ({
           </TouchableOpacity>
         ))}
       </View>
-      {vertical === 'flex-start' && (
+      {item.alignment.vertical === 'flex-start' && (
         <>
           <View
             style={{
@@ -670,7 +680,7 @@ const Editor = ({
           </View>
         </>
       )}
-      {vertical === 'flex-end' && (
+      {item.alignment.vertical === 'flex-end' && (
         <>
           <View
             style={{
@@ -760,24 +770,36 @@ const Editor = ({
         ].map((option, index) => (
           <TouchableOpacity
             key={index}
-            activeOpacity={horizontal === option.alignment ? 1 : 0.2}
+            activeOpacity={
+              item.alignment.horizontal === option.alignment ? 1 : 0.2
+            }
             onPress={() => {
-              setHorizontal(option.alignment);
+              setSelectedItem({
+                ...item,
+                alignment: {
+                  ...item.alignment,
+                  horizontal: option.alignment,
+                },
+              });
             }}
             style={{flex: 1, alignItems: 'center', gap: 12}}>
-            {horizontal === option.alignment ? option.selected : option.node}
+            {item.alignment.horizontal === option.alignment
+              ? option.selected
+              : option.node}
             <View
               style={{
                 paddingVertical: 4,
                 paddingHorizontal: 12,
                 backgroundColor:
-                  horizontal === option.alignment ? '#0066FF' : 'white',
+                  item.alignment.horizontal === option.alignment
+                    ? '#0066FF'
+                    : 'white',
                 borderRadius: 1000,
               }}>
               <Text
                 style={{
                   color:
-                    horizontal === option.alignment
+                    item.alignment.horizontal === option.alignment
                       ? 'white'
                       : 'rgb(100, 100, 100)',
                   fontWeight: '600',
@@ -788,7 +810,7 @@ const Editor = ({
           </TouchableOpacity>
         ))}
       </View>
-      {horizontal === 'flex-start' && (
+      {item.alignment.horizontal === 'flex-start' && (
         <>
           <View
             style={{
@@ -839,7 +861,7 @@ const Editor = ({
           </View>
         </>
       )}
-      {horizontal === 'flex-end' && (
+      {item.alignment.horizontal === 'flex-end' && (
         <>
           <View
             style={{
