@@ -77,7 +77,6 @@ const Editor = ({
   const [leftExpansion, setLeftExpansion] = useState(item.expansion.left);
   const [rightExpansion, setRightExpansion] = useState(item.expansion.right);
   const [colorSelection, setColorSelection] = useState(item.backgroundColor);
-  const [sizing, setSizing] = useState(item.sizing);
   const [horizontal, setHorizontal] = useState(item.alignment.horizontal);
   const [vertical, setVertical] = useState(item.alignment.vertical);
   const [insetTop, setInsetTop] = useState(item.inset.top);
@@ -92,7 +91,7 @@ const Editor = ({
     setInsetBottom(0);
     setInsetLeft(0);
     setInsetRight(0);
-  }, [sizing]);
+  }, [item.sizing]);
 
   const controls = (
     <View
@@ -187,24 +186,27 @@ const Editor = ({
         ].map((option, index) => (
           <TouchableOpacity
             key={index}
-            activeOpacity={sizing === option.name ? 1 : 0.2}
+            activeOpacity={item.sizing === option.name ? 1 : 0.2}
             onPress={() => {
-              setSizing(option.name);
+              setSelectedItem({...item, sizing: option.name});
               setSelectedItem({...item, scale: option.scale});
             }}
             style={{flex: 1, alignItems: 'center', gap: 12}}>
-            {sizing === option.name ? option.selected : option.node}
+            {item.sizing === option.name ? option.selected : option.node}
             <View
               style={{
                 paddingVertical: 4,
                 paddingHorizontal: 12,
-                backgroundColor: sizing === option.name ? '#0066FF' : 'white',
+                backgroundColor:
+                  item.sizing === option.name ? '#0066FF' : 'white',
                 borderRadius: 1000,
               }}>
               <Text
                 style={{
                   color:
-                    sizing === option.name ? 'white' : 'rgb(100, 100, 100)',
+                    item.sizing === option.name
+                      ? 'white'
+                      : 'rgb(100, 100, 100)',
                   fontWeight: '600',
                 }}>
                 {option.name}
@@ -213,7 +215,7 @@ const Editor = ({
           </TouchableOpacity>
         ))}
       </View>
-      {sizing === 'Scale' && (
+      {item.sizing === 'Scale' && (
         <>
           <View
             style={{
@@ -880,8 +882,8 @@ const Editor = ({
             {preview}
             {backgrounds}
             {size}
-            {sizing !== 'Fill' && verticalalignment}
-            {sizing !== 'Fill' && horizontalalignment}
+            {item.sizing !== 'Fill' && verticalalignment}
+            {item.sizing !== 'Fill' && horizontalalignment}
             {controls}
           </View>
         </ScrollView>
