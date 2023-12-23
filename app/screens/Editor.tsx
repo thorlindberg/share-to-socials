@@ -77,7 +77,6 @@ const Editor = ({
   const [leftExpansion, setLeftExpansion] = useState(item.expansion.left);
   const [rightExpansion, setRightExpansion] = useState(item.expansion.right);
   const [colorSelection, setColorSelection] = useState(item.backgroundColor);
-  const [paddingValue, setPaddingValue] = useState(item.scale);
   const [sizing, setSizing] = useState(item.sizing);
   const [horizontal, setHorizontal] = useState(item.alignment.horizontal);
   const [vertical, setVertical] = useState(item.alignment.vertical);
@@ -191,7 +190,7 @@ const Editor = ({
             activeOpacity={sizing === option.name ? 1 : 0.2}
             onPress={() => {
               setSizing(option.name);
-              setPaddingValue(option.scale);
+              setSelectedItem({...item, scale: option.scale});
             }}
             style={{flex: 1, alignItems: 'center', gap: 12}}>
             {sizing === option.name ? option.selected : option.node}
@@ -234,8 +233,10 @@ const Editor = ({
               <Slider
                 minimumValue={0}
                 maximumValue={5}
-                value={paddingValue}
-                onValueChange={setPaddingValue}
+                value={item.scale}
+                onValueChange={value =>
+                  setSelectedItem({...item, scale: value})
+                }
                 minimumTrackTintColor="#0066FF"
                 maximumTrackTintColor="#000000"
               />
@@ -245,7 +246,7 @@ const Editor = ({
                 color: '#0066FF',
                 fontWeight: '600',
               }}>
-              {`${paddingValue.toFixed(2)}x`}
+              {`${item.scale.toFixed(2)}x`}
             </Text>
           </View>
         </>
