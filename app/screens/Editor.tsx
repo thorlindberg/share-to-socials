@@ -47,6 +47,7 @@ const Editor = ({
   setIsPreviewing: (value: boolean) => void;
   nodeToCaptureRef: React.RefObject<View>;
 }) => {
+  const safeAreaInsets = useSafeAreaInsets();
   const [colors] = useState<string[]>(['red', 'green', 'blue', 'purple']); // [colors, setColors]
   /*
   useEffect(() => {
@@ -71,7 +72,7 @@ const Editor = ({
   }, [selectedImage]);
   */
 
-  const safeAreaInsets = useSafeAreaInsets();
+  const [blur, setBlur] = useState(item.blur);
   const [topExpansion, setTopExpansion] = useState(item.expansion.top);
   const [bottomExpansion, setBottomExpansion] = useState(item.expansion.bottom);
   const [leftExpansion, setLeftExpansion] = useState(item.expansion.left);
@@ -86,8 +87,6 @@ const Editor = ({
   const [insetBottom, setInsetBottom] = useState(item.inset.bottom);
   const [insetLeft, setInsetLeft] = useState(item.inset.left);
   const [insetRight, setInsetRight] = useState(item.inset.right);
-
-  const [blur, setBlur] = useState(200);
 
   useEffect(() => {
     setHorizontal('center');

@@ -1,6 +1,7 @@
 {
   "Featured": [
     {
+      "blur": 200,
       "backgroundColor": "white",
       "background": "Color",
       "scale": 1,
@@ -23,6 +24,7 @@
       "sizing": "Fit"
     },
     {
+      "blur": 200,
       "backgroundColor": "white",
       "background": "Color",
       "scale": 0.8,
@@ -45,6 +47,7 @@
       "sizing": "Fit"
     },
     {
+      "blur": 200,
       "backgroundColor": "white",
       "background": "Duplicate",
       "scale": 1,
@@ -69,6 +72,7 @@
   ],
   "Basic": [
     {
+      "blur": 200,
       "backgroundColor": "white",
       "background": "Color",
       "scale": 1,
@@ -91,6 +95,7 @@
       "sizing": "Fit"
     },
     {
+      "blur": 200,
       "backgroundColor": "white",
       "background": "Color",
       "scale": 1,
@@ -113,6 +118,7 @@
       "sizing": "Fit"
     },
     {
+      "blur": 200,
       "backgroundColor": "white",
       "background": "Color",
       "scale": 1,
@@ -135,6 +141,7 @@
       "sizing": "Fit"
     },
     {
+      "blur": 200,
       "backgroundColor": "white",
       "background": "Color",
       "scale": 1,
@@ -157,6 +164,7 @@
       "sizing": "Fit"
     },
     {
+      "blur": 200,
       "backgroundColor": "white",
       "background": "Color",
       "scale": 1,
@@ -181,6 +189,7 @@
   ],
   "Complex": [
     {
+      "blur": 200,
       "backgroundColor": "white",
       "background": "Color",
       "scale": 1,
@@ -203,6 +212,7 @@
       "sizing": "Fit"
     },
     {
+      "blur": 200,
       "backgroundColor": "white",
       "background": "Color",
       "scale": 1,
@@ -225,6 +235,7 @@
       "sizing": "Fit"
     },
     {
+      "blur": 200,
       "backgroundColor": "white",
       "background": "Color",
       "scale": 1,
