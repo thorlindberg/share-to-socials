@@ -72,7 +72,6 @@ const Editor = ({
   }, [selectedImage]);
   */
 
-  const [blur, setBlur] = useState(item.blur);
   const [topExpansion, setTopExpansion] = useState(item.expansion.top);
   const [bottomExpansion, setBottomExpansion] = useState(item.expansion.bottom);
   const [leftExpansion, setLeftExpansion] = useState(item.expansion.left);
@@ -80,7 +79,6 @@ const Editor = ({
   const [colorSelection, setColorSelection] = useState(item.backgroundColor);
   const [paddingValue, setPaddingValue] = useState(item.scale);
   const [sizing, setSizing] = useState(item.sizing);
-  const [background, setBackground] = useState(item.background);
   const [horizontal, setHorizontal] = useState(item.alignment.horizontal);
   const [vertical, setVertical] = useState(item.alignment.vertical);
   const [insetTop, setInsetTop] = useState(item.inset.top);
@@ -356,24 +354,26 @@ const Editor = ({
         ].map((option, index) => (
           <TouchableOpacity
             key={index}
-            activeOpacity={background === option.name ? 1 : 0.2}
+            activeOpacity={item.background === option.name ? 1 : 0.2}
             onPress={() => {
-              setBackground(option.name);
+              setSelectedItem({...item, background: option.name});
             }}
             style={{flex: 1, alignItems: 'center', gap: 12}}>
-            {background === option.name ? option.selected : option.node}
+            {item.background === option.name ? option.selected : option.node}
             <View
               style={{
                 paddingVertical: 4,
                 paddingHorizontal: 12,
                 backgroundColor:
-                  background === option.name ? '#0066FF' : 'white',
+                  item.background === option.name ? '#0066FF' : 'white',
                 borderRadius: 1000,
               }}>
               <Text
                 style={{
                   color:
-                    background === option.name ? 'white' : 'rgb(100, 100, 100)',
+                    item.background === option.name
+                      ? 'white'
+                      : 'rgb(100, 100, 100)',
                   fontWeight: '600',
                 }}>
                 {option.name}
@@ -382,7 +382,7 @@ const Editor = ({
           </TouchableOpacity>
         ))}
       </View>
-      {background === 'Color' && (
+      {item.background === 'Color' && (
         <>
           <View
             style={{
@@ -428,7 +428,7 @@ const Editor = ({
           </TouchableOpacity>
         </>
       )}
-      {background === 'Automatic' && (
+      {item.background === 'Automatic' && (
         <>
           <View
             style={{
@@ -474,7 +474,7 @@ const Editor = ({
           </View>
         </>
       )}
-      {background === 'Duplicate' && (
+      {item.background === 'Duplicate' && (
         <>
           <View
             style={{
@@ -501,8 +501,8 @@ const Editor = ({
                 step={1}
                 minimumValue={0}
                 maximumValue={500} // not sure how to determine the appropriate value
-                value={blur}
-                onValueChange={setBlur}
+                value={item.blur}
+                onValueChange={value => setSelectedItem({...item, blur: value})}
                 minimumTrackTintColor="#0066FF"
                 maximumTrackTintColor="#000000"
               />
@@ -512,7 +512,7 @@ const Editor = ({
                 color: '#0066FF',
                 fontWeight: '600',
               }}>
-              {blur}
+              {item.blur}
             </Text>
           </View>
         </>
