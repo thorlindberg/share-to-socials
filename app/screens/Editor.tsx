@@ -79,19 +79,51 @@ const Editor = ({
   const [colorSelection, setColorSelection] = useState(item.backgroundColor);
   const [horizontal, setHorizontal] = useState(item.alignment.horizontal);
   const [vertical, setVertical] = useState(item.alignment.vertical);
-  const [insetTop, setInsetTop] = useState(item.inset.top);
-  const [insetBottom, setInsetBottom] = useState(item.inset.bottom);
-  const [insetLeft, setInsetLeft] = useState(item.inset.left);
-  const [insetRight, setInsetRight] = useState(item.inset.right);
 
   useEffect(() => {
-    setHorizontal('center');
-    setVertical('center');
-    setInsetTop(0);
-    setInsetBottom(0);
-    setInsetLeft(0);
-    setInsetRight(0);
-  }, [item.sizing]);
+    setSelectedItem({
+      ...item,
+      alignment: {
+        ...item.alignment,
+        horizontal: 'center',
+      },
+    });
+    setSelectedItem({
+      ...item,
+      alignment: {
+        ...item.alignment,
+        vertical: 'center',
+      },
+    });
+    setSelectedItem({
+      ...item,
+      inset: {
+        ...item.inset,
+        top: 0,
+      },
+    });
+    setSelectedItem({
+      ...item,
+      inset: {
+        ...item.inset,
+        bottom: 0,
+      },
+    });
+    setSelectedItem({
+      ...item,
+      inset: {
+        ...item.inset,
+        left: 0,
+      },
+    });
+    setSelectedItem({
+      ...item,
+      inset: {
+        ...item.inset,
+        right: 0,
+      },
+    });
+  }, [item, item.sizing, setSelectedItem]);
 
   const controls = (
     <View
@@ -614,8 +646,16 @@ const Editor = ({
                 step={1}
                 minimumValue={0}
                 maximumValue={100} // not sure how to determine the appropriate value. it should probably never be more than what would equal a centered image
-                value={insetTop}
-                onValueChange={setInsetTop}
+                value={item.inset.top}
+                onValueChange={value =>
+                  setSelectedItem({
+                    ...item,
+                    inset: {
+                      ...item.inset,
+                      top: value,
+                    },
+                  })
+                }
                 minimumTrackTintColor="#0066FF"
                 maximumTrackTintColor="#000000"
               />
@@ -625,7 +665,7 @@ const Editor = ({
                 color: '#0066FF',
                 fontWeight: '600',
               }}>
-              {insetTop}
+              {item.inset.top}
             </Text>
           </View>
         </>
@@ -657,8 +697,16 @@ const Editor = ({
                 step={1}
                 minimumValue={0}
                 maximumValue={100} // not sure how to determine the appropriate value. it should probably never be more than what would equal a centered image
-                value={insetBottom}
-                onValueChange={setInsetBottom}
+                value={item.inset.bottom}
+                onValueChange={value =>
+                  setSelectedItem({
+                    ...item,
+                    inset: {
+                      ...item.inset,
+                      bottom: value,
+                    },
+                  })
+                }
                 minimumTrackTintColor="#0066FF"
                 maximumTrackTintColor="#000000"
               />
@@ -668,7 +716,7 @@ const Editor = ({
                 color: '#0066FF',
                 fontWeight: '600',
               }}>
-              {insetBottom}
+              {item.inset.bottom}
             </Text>
           </View>
         </>
@@ -767,8 +815,16 @@ const Editor = ({
                 step={1}
                 minimumValue={0}
                 maximumValue={100} // not sure how to determine the appropriate value. it should probably never be more than what would equal a centered image
-                value={insetLeft}
-                onValueChange={setInsetLeft}
+                value={item.inset.left}
+                onValueChange={value =>
+                  setSelectedItem({
+                    ...item,
+                    inset: {
+                      ...item.inset,
+                      left: value,
+                    },
+                  })
+                }
                 minimumTrackTintColor="#0066FF"
                 maximumTrackTintColor="#000000"
               />
@@ -778,7 +834,7 @@ const Editor = ({
                 color: '#0066FF',
                 fontWeight: '600',
               }}>
-              {insetLeft}
+              {item.inset.left}
             </Text>
           </View>
         </>
@@ -810,8 +866,16 @@ const Editor = ({
                 step={1}
                 minimumValue={0}
                 maximumValue={100} // not sure how to determine the appropriate value. it should probably never be more than what would equal a centered image
-                value={insetRight}
-                onValueChange={setInsetRight}
+                value={item.inset.right}
+                onValueChange={value =>
+                  setSelectedItem({
+                    ...item,
+                    inset: {
+                      ...item.inset,
+                      right: value,
+                    },
+                  })
+                }
                 minimumTrackTintColor="#0066FF"
                 maximumTrackTintColor="#000000"
               />
@@ -821,7 +885,7 @@ const Editor = ({
                 color: '#0066FF',
                 fontWeight: '600',
               }}>
-              {insetRight}
+              {item.inset.right}
             </Text>
           </View>
         </>
