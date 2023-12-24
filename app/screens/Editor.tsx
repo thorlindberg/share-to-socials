@@ -72,8 +72,6 @@ const Editor = ({
   }, [selectedImage]);
   */
 
-  const [colorSelection, setColorSelection] = useState(item.backgroundColor);
-
   useEffect(() => {
     setSelectedItem({
       ...item,
@@ -453,9 +451,9 @@ const Editor = ({
           />
           <TouchableOpacity
             onPress={() => {
-              handleColorPicker(colorSelection, color => {
-                setColorSelection(color);
-              });
+              handleColorPicker(item.backgroundColor, color =>
+                setSelectedItem({...item, backgroundColor: color}),
+              );
             }}>
             <View
               style={{
@@ -481,7 +479,7 @@ const Editor = ({
                     width: 34,
                     height: 20,
                     borderRadius: 2,
-                    backgroundColor: colorSelection,
+                    backgroundColor: item.backgroundColor,
                   }}
                 />
               </View>
@@ -509,7 +507,7 @@ const Editor = ({
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  setColorSelection(option);
+                  setSelectedItem({...item, backgroundColor: option});
                 }}>
                 <View
                   style={{
