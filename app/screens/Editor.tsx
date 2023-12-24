@@ -72,10 +72,6 @@ const Editor = ({
   }, [selectedImage]);
   */
 
-  const [topExpansion, setTopExpansion] = useState(item.expansion.top);
-  const [bottomExpansion, setBottomExpansion] = useState(item.expansion.bottom);
-  const [leftExpansion, setLeftExpansion] = useState(item.expansion.left);
-  const [rightExpansion, setRightExpansion] = useState(item.expansion.right);
   const [colorSelection, setColorSelection] = useState(item.backgroundColor);
 
   useEffect(() => {
@@ -136,8 +132,16 @@ const Editor = ({
       }}>
       <View style={{flexDirection: 'row', gap: 8}}>
         <TextInput
-          onChangeText={setTopExpansion}
-          value={topExpansion}
+          onChangeText={value =>
+            setSelectedItem({
+              ...item,
+              expansion: {
+                ...item.expansion,
+                top: value,
+              },
+            })
+          }
+          value={item.expansion.top}
           placeholder="Top"
           keyboardType="numeric"
         />
@@ -151,8 +155,16 @@ const Editor = ({
         }}>
         <View style={{flexDirection: 'row', gap: 8}}>
           <TextInput
-            onChangeText={setLeftExpansion}
-            value={leftExpansion}
+            onChangeText={value =>
+              setSelectedItem({
+                ...item,
+                expansion: {
+                  ...item.expansion,
+                  left: value,
+                },
+              })
+            }
+            value={item.expansion.left}
             placeholder="Left"
             keyboardType="numeric"
           />
@@ -160,8 +172,16 @@ const Editor = ({
         </View>
         <View style={{flexDirection: 'row', gap: 8}}>
           <TextInput
-            onChangeText={setRightExpansion}
-            value={rightExpansion}
+            onChangeText={value =>
+              setSelectedItem({
+                ...item,
+                expansion: {
+                  ...item.expansion,
+                  right: value,
+                },
+              })
+            }
+            value={item.expansion.right}
             placeholder="Right"
             keyboardType="numeric"
           />
@@ -170,8 +190,16 @@ const Editor = ({
       </View>
       <View style={{flexDirection: 'row', gap: 8}}>
         <TextInput
-          onChangeText={setBottomExpansion}
-          value={bottomExpansion}
+          onChangeText={value =>
+            setSelectedItem({
+              ...item,
+              expansion: {
+                ...item.expansion,
+                bottom: value,
+              },
+            })
+          }
+          value={item.expansion.bottom}
           placeholder="Bottom"
           keyboardType="numeric"
         />
