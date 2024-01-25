@@ -35,7 +35,7 @@ const Composite = ({
   initialBottomExpansion: number;
   initialLeftExpansion: number;
   initialRightExpansion: number;
-  nodeToCaptureRef: React.RefObject<View>;
+  nodeToCaptureRef?: React.RefObject<View>;
 }) => {
   const screenHeight = Dimensions.get('window').height;
   const [dimensions, setDimensions] = useState(1);
